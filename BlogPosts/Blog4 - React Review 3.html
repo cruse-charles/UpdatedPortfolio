@@ -1,0 +1,207 @@
+<!DOCTYPE HTML>
+<!--
+	Future Imperfect by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+
+<head>
+	<title>Single - Future Imperfect by HTML5 UP</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="stylesheet" href="../assets/css/main.css" />
+</head>
+
+<body class="single is-preload">
+
+	<!-- Wrapper -->
+	<div id="wrapper">
+
+		<!-- Header -->
+		<header id="header">
+			<h1><a href="../index.html">Portfolio Site of Charles Cruse</a></h1>
+			<nav class="links">
+				<ul>
+					<li><a href="../aboutme.html">About Me</a></li>
+					<li><a href="../assets/Charles_Cruse_Resume.pdf">Resume</a></li>
+					<!-- <li><a href="#">Projects</a></li> -->
+				</ul>
+			</nav>
+			<!-- <nav class="main">
+                <ul>
+                    <li class="search">
+                        <a class="fa-search" href="#search">Search</a>
+                        <form id="search" method="get" action="#">
+                            <input type="text" name="query" placeholder="Search" />
+                        </form>
+                    </li>
+                    <li class="menu">
+                        <a class="fa-bars" href="#menu">Menu</a>
+                    </li>
+                </ul>
+            </nav> -->
+		</header>
+
+		<!-- Menu -->
+		<section id="menu">
+
+			<!-- Search -->
+			<!-- <section>
+				<form class="search" method="get" action="#">
+					<input type="text" name="query" placeholder="Search" />
+				</form>
+			</section> -->
+
+			<!-- Links -->
+			<!-- <section>
+				<ul class="links">
+					<li>
+						<a href="#">
+							<h3>Lorem ipsum</h3>
+							<p>Feugiat tempus veroeros dolor</p>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<h3>Dolor sit amet</h3>
+							<p>Sed vitae justo condimentum</p>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<h3>Feugiat veroeros</h3>
+							<p>Phasellus sed ultricies mi congue</p>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<h3>Etiam sed consequat</h3>
+							<p>Porta lectus amet ultricies</p>
+						</a>
+					</li>
+				</ul>
+			</section> -->
+
+			<!-- Actions -->
+			<!-- <section>
+				<ul class="actions stacked">
+					<li><a href="#" class="button large fit">Log In</a></li>
+				</ul>
+			</section> -->
+
+		</section>
+
+		<!-- Main -->
+		<div id="main">
+
+			<!-- Post -->
+			<article class="post">
+				<header>
+					<div class="title">
+						<h2><a href="#">Reviewing React #3 - Props</a></h2>
+						<p>Taking a look back on some React foundamentals - Props</p>
+					</div>
+					<div class="meta">
+						<time class="published" datetime="2024-10-07">Oct 7, 2024</time>
+						<!-- <a href="#" class="author"><span class="name">Jane Doe</span><img src="images/avatar.jpg"
+								alt="" /></a> -->
+					</div>
+				</header>
+				<span><img src="../images/Blog4/PhotoHeader.png" alt="" /></span>
+				<h2>What are props?</h2>
+				<p>Short for properties, props are used to pass around information. React components are just JavaScript functions, and like all functions, 
+					they can receive arguments. In React, those arguments come in the form of a single props object. To better understand, consider props 
+					as 'instructions' that a parent passes down to a child.
+				</p>
+				<p>We can pass primitive data types as well as objects and functions. We can also set a default prop in case nothing is passed down.</p>
+				<h2>Basic Props Example</h2>
+				<img src="../images/Blog4/Picture1.png" />
+				<p>Here, if the name prop isn't passed, the component will default to displaying Galactic Traveler. This is useful for ensuring your
+					 components remain resilient and don't break from missing data.
+				</p>
+				<h2>Passing Functions as Props</h2>
+				<p>Props aren't limited to static data, you can also pass functions. When we pass a function from parent to child, we can call it in the child component. 
+					This pattern is essential for child-to-parent communication in React:</p>
+				<img src="../images/Blog4/Picture2.png" />
+				<p>In this example, the Thruster can now use the startThrusters method that's actually defined in the Spaceship component. When the button in the Thruster 
+					component is clicked, it will call startThrusters, and print "Thrusters are ON" to the console.</p>
+				<h2>Destructuring Props</h2>
+				<p>This lets us unpack properties from objects or arrays right in our function signature. Instead of always writing props.name, props.status, etc., 
+					you can destructure props directly in the function parameter:</p>
+				<img src="../images/Blog4/Picture3.png" />
+				<h2>props.children</h2>
+				<p>React gives us a special prop called children. Props.children allows developers to pass components as properties. This feature is particularly beneficial 
+					for creating 'wrapper' components.
+				</p>
+				<img src="../images/Blog4/Picture4.png" />
+				<p>Here, the Box component acts as a container or wrapper. It doesn't know what will be inside—it just renders whatever is passed to it via props.children. 
+					This is a core pattern for creating reusable components.
+				</p>
+				<h2>A More Interactive Example: Two-Way Data Flow</h2>
+				<p>Let's now explore a more advanced example that shows how data and functions can flow in both directions between components.
+				</p>
+				<p>Parent Component:
+					This App component uses state to track a word and passes down handlers for updating and resetting that state.
+				</p>
+				<img src="../images/Blog4/Picture5.png" />
+				<p>Child Component
+					This Word component uses the props it receives to: display the current word, update the parent's state when input changes, 
+					and reset the word when clicked.
+				</p>
+				<img src="../images/Blog4/Picture6.png" />
+				<h2>Data Flow</h2>
+					<p>From Parent to Child:</p>
+					<ol>
+						<li>The App component passes the current word (submittedWord) and the reset and change handlers (handleWordReset and handleWordChange) 
+							as props to the Word component.</li>
+					</ol>
+					<p>From Child to Parent:</p>
+					<ol>
+						<li>When the input in Word changes, handleInputChange calls onWordChange with the new word.</li>
+						<li>onWordChange is the handleWordChange function defined in App, which updates the submittedWord state in App.</li>
+					</ol>
+				<h2>Key Takeaways</h2>
+				<ul>
+					<li>Props are essential to making React components dynamic and reusable.</li>
+					<li>You can pass any type of data—including functions—as props.</li>
+					<li>props.children enables powerful composition patterns.</li>
+					<li>Destructuring props makes your code cleaner and easier to read.</li>
+					<li>Managing data flow via props is foundational to state management in React apps.</li>
+				</ul>
+				<footer>
+					<!-- <ul class="stats">
+						<li><a href="#">General</a></li>
+						<li><a href="#" class="icon solid fa-heart">28</a></li>
+						<li><a href="#" class="icon solid fa-comment">128</a></li>
+					</ul> -->
+				</footer>
+			</article>
+
+		</div>
+
+		<!-- Footer -->
+		<section id="footer">
+			<ul class="icons">
+				<li><a href="https://www.linkedin.com/in/charles-cruse-2ba72ab6/"
+						class="icon brands fa-linkedin fa-lg"><span class="label">LinkedIn</span></a></li>
+				<li><a href="https://github.com/cruse-charles" class="icon brands fa-github fa-lg"><span
+							class="label">Github</span></a></li>
+				<li><a href="mailto:charlesncruse@gmail.com" class="icon solid fa-envelope fa-lg"><span
+							class="label">Email</span></a></li>
+			</ul>
+			<p class="copyright">&copy; Untitled. Design: <a href="http://html5up.net">HTML5 UP</a>.
+		</section>
+
+	</div>
+
+	<!-- Scripts -->
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/browser.min.js"></script>
+	<script src="assets/js/breakpoints.min.js"></script>
+	<script src="assets/js/util.js"></script>
+	<script src="assets/js/main.js"></script>
+
+</body>
+
+</html>
