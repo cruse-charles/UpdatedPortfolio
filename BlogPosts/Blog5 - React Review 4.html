@@ -1,0 +1,200 @@
+<!DOCTYPE HTML>
+<!--
+	Future Imperfect by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+
+<head>
+	<title>Single - Future Imperfect by HTML5 UP</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="stylesheet" href="../assets/css/main.css" />
+</head>
+
+<body class="single is-preload">
+
+	<!-- Wrapper -->
+	<div id="wrapper">
+
+		<!-- Header -->
+		<header id="header">
+			<h1><a href="../index.html">Portfolio Site of Charles Cruse</a></h1>
+			<nav class="links">
+				<ul>
+					<li><a href="../aboutme.html">About Me</a></li>
+					<li><a href="../assets/Charles_Cruse_Resume.pdf">Resume</a></li>
+					<!-- <li><a href="#">Projects</a></li> -->
+				</ul>
+			</nav>
+			<!-- <nav class="main">
+                <ul>
+                    <li class="search">
+                        <a class="fa-search" href="#search">Search</a>
+                        <form id="search" method="get" action="#">
+                            <input type="text" name="query" placeholder="Search" />
+                        </form>
+                    </li>
+                    <li class="menu">
+                        <a class="fa-bars" href="#menu">Menu</a>
+                    </li>
+                </ul>
+            </nav> -->
+		</header>
+
+		<!-- Menu -->
+		<section id="menu">
+
+			<!-- Search -->
+			<!-- <section>
+				<form class="search" method="get" action="#">
+					<input type="text" name="query" placeholder="Search" />
+				</form>
+			</section> -->
+
+			<!-- Links -->
+			<!-- <section>
+				<ul class="links">
+					<li>
+						<a href="#">
+							<h3>Lorem ipsum</h3>
+							<p>Feugiat tempus veroeros dolor</p>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<h3>Dolor sit amet</h3>
+							<p>Sed vitae justo condimentum</p>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<h3>Feugiat veroeros</h3>
+							<p>Phasellus sed ultricies mi congue</p>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<h3>Etiam sed consequat</h3>
+							<p>Porta lectus amet ultricies</p>
+						</a>
+					</li>
+				</ul>
+			</section> -->
+
+			<!-- Actions -->
+			<!-- <section>
+				<ul class="actions stacked">
+					<li><a href="#" class="button large fit">Log In</a></li>
+				</ul>
+			</section> -->
+
+		</section>
+
+		<!-- Main -->
+		<div id="main">
+
+			<!-- Post -->
+			<article class="post">
+				<header>
+					<div class="title">
+						<h2><a href="#">Reviewing React #4 - Event Handling and Forms</a></h2>
+						<p>Taking a look back on some React foundamentals - Event Handling and Forms</p>
+					</div>
+					<div class="meta">
+						<time class="published" datetime="2024-10-17">Oct 17, 2024</time>
+						<!-- <a href="#" class="author"><span class="name">Jane Doe</span><img src="images/avatar.jpg"
+								alt="" /></a> -->
+					</div>
+				</header>
+				<span><img src="../images/Blog5/PhotoHeader.png" alt="" /></span>
+				<h2>What is Event Handling?</h2>
+				<p>React allows us to respond to user interactions like clicks, input changes, mouse movements, etc. These are called events. React handles events 
+                    in a way that's very similar to native DOM handling, but with a few important differences:
+                    <ul>
+                        <li>Event names are camelCase instead of lowercase (onClick vs onclick)</li>
+                        <li>You pass a function as the event handler</li>
+                    </ul>
+				</p>
+				<h2>Handling a Button Click</h2>
+				<p>Here's a simple example of handling a button click event:</p>
+                <img src="../images/Blog5/Picture1.png" />
+                <p>We defined a function handleClick that runs when the button is clicked. We passed that function to the onClick event of the button element. 
+                    Note that we aren't invoking this function, simply passing a reference to it.</p>
+				<h2>Passing Arguments to Event Handlers</h2>
+				<p>Sometimes, you'll want to pass arguments to your event handler function. Here's how to do it:</p>
+				<img src="../images/Blog5/Picture2.png" />
+				<p>We use an arrow function to pass the missionName prop into our handler. Without the arrow function, handleClick(missionName) would run immediately 
+                    when the component renders.</p>
+				<h2>Handling Forms in React</h2>
+				<p>React requires us to manage input state ourselves through controlled components. That means React components are in charge of storing and updating 
+                    the input's value. A controlled input is an input element whose value is tied to a piece of React state.</p>
+				<img src="../images/Blog5/Picture3.png" />
+				<p>The value prop is what allows us to control this field. We are essentially saying: "This input box should always display whatever is stored 
+                    in the astronaut variable."                    
+				</p>
+                <p>
+                    onChange listens for changes and updates the setAstronaut state variable using handleChange:
+                    <ul>
+                        <li>e is short for event - it's the synthetic event React passes when something happens (in this case, the input value changes).</li>
+                        <li>e.target refers to the actual DOM element that triggered the event - the input element in this case.</li>
+                        <li>e.target.value is the current text the user has typed into that input field.</li>
+                    </ul>
+                </p>
+                <p>Our handleSubmit function connected to the onSubmit property that is called when the form is submitted prevents the default form behavior 
+                    and shows an alert with the astronaut's name. This pattern allows React to fully control the input's value, keeping everything in sync 
+                    with your app's state.</p>
+				<h2>Multiple Inputs with One State Object</h2>
+				<p>When handling multiple form inputs, it's common to store them in a single state object. This prevents us from making multiple state variables 
+                    for each input field:
+				</p>
+                <img src="../images/Blog5/Picture4.PNG" />
+				<p>Using one handler for multiple inputs is a clean way to manage complex forms. Depending on our code base, the handleChange function can be 
+                    referenced in the onChange prop form tag itself, which will bubble up. As long as we have matching name props for each input field, it will 
+                    still work properly with updating state.
+				</p>
+				<h2>Key Takeaways</h2>
+				<ul>
+					<li>Props are essential to making React components dynamic and reusable.</li>
+                    <li>You can pass any type of data—including functions—as props.</li>
+                    <li>props.children enables powerful composition patterns.</li>
+                    <li>Destructuring props makes your code cleaner and easier to read.</li>
+                    <li>Managing data flow via props is foundational to state management in React apps.</li>
+				</ul>
+				<footer>
+					<!-- <ul class="stats">
+						<li><a href="#">General</a></li>
+						<li><a href="#" class="icon solid fa-heart">28</a></li>
+						<li><a href="#" class="icon solid fa-comment">128</a></li>
+					</ul> -->
+				</footer>
+			</article>
+
+		</div>
+
+		<!-- Footer -->
+		<section id="footer">
+			<ul class="icons">
+				<li><a href="https://www.linkedin.com/in/charles-cruse-2ba72ab6/"
+						class="icon brands fa-linkedin fa-lg"><span class="label">LinkedIn</span></a></li>
+				<li><a href="https://github.com/cruse-charles" class="icon brands fa-github fa-lg"><span
+							class="label">Github</span></a></li>
+				<li><a href="mailto:charlesncruse@gmail.com" class="icon solid fa-envelope fa-lg"><span
+							class="label">Email</span></a></li>
+			</ul>
+			<p class="copyright">&copy; Untitled. Design: <a href="http://html5up.net">HTML5 UP</a>.
+		</section>
+
+	</div>
+
+	<!-- Scripts -->
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/browser.min.js"></script>
+	<script src="assets/js/breakpoints.min.js"></script>
+	<script src="assets/js/util.js"></script>
+	<script src="assets/js/main.js"></script>
+
+</body>
+
+</html>
