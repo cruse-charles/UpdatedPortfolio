@@ -116,11 +116,11 @@
 					You call useState with the initial value of the state. It returns a pair: the current state value
 					and a function to update it. This function updates the state and causes the component to re-render:
 				</p>
-				<img src="../images/FirstBlog/Picture1.png" />
+				<img src="../images/Blog1/Picture1.png" />
 				<h2>How to update our state variables</h2>
 				<p>A direct way to update state variables can be seen below, but it’s not the best way to update state
 					variables that might have some complexity.</p>
-				<img src="../images/FirstBlog/Picture2.png" />
+				<img src="../images/Blog1/Picture2.png" />
 				<p>setState updates are asynchronous. This means that JavaScript doesn't immediately update the current
 					state and re-render the component when setState is called. Instead, it schedules these operations
 					for future execution and proceeds to the next line of code. This future execution can lead to errors
@@ -130,10 +130,10 @@
 					accurate updates even with asynchronous modifications. This function receives the previous state
 					value, performs the necessary state update operations, and returns the new state value. This is
 					called the functional method.</p>
-				<img src="../images/FirstBlog/Picture3.png" />
+				<img src="../images/Blog1/Picture3.png" />
 				<h2>How do we update more complex variables?</h2>
 				<p>For objects, we can continue to update it using functional method along with the spread operator.</p>
-				<img src="../images/FirstBlog/Picture4.png" />
+				<img src="../images/Blog1/Picture4.png" />
 				<p>Brackets are needed to key into the object correctly. Without brackets, the key will be a literal
 					string "key". Here, we are also using an implicit return with the outermost parenthesis. By using
 					curly brackets instead, we would need to add ‘return’ before the object itself.</p>
@@ -143,11 +143,11 @@
 
 					See how the code below takes up more space and can cause multiple re-renders:
 				</p>
-				<img src="../images/FirstBlog/Picture5.png" />
+				<img src="../images/Blog1/Picture5.png" />
 				<p>Instead, we can put our variables into a single object, and use our method for updating objects to
 					cut down on code:
 				</p>
-				<img src="../images/FirstBlog/Picture6.png" />
+				<img src="../images/Blog1/Picture6.png" />
 				<footer>
 					<!-- <ul class="stats">
 						<li><a href="#">General</a></li>
