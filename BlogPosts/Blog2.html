@@ -99,55 +99,75 @@
 			<article class="post">
 				<header>
 					<div class="title">
-						<h2><a href="#">Reviewing React #1</a></h2>
-						<p>Taking a look back on some React foundamentals - useState</p>
+						<h2><a href="#">Learn Django With Me - #1 Creating a Project</a></h2>
+						<p>Explore Django with me as I learn this new framework</p>
 					</div>
 					<div class="meta">
-						<time class="published" datetime="2015-11-01">September 1, 2024</time>
+						<time class="published" datetime="2015-11-01">September 15, 2024</time>
 						<!-- <a href="#" class="author"><span class="name">Jane Doe</span><img src="images/avatar.jpg"
 								alt="" /></a> -->
 					</div>
 				</header>
-				<span><img src="../images/useState-hook.png" alt="" /></span>
-				<h2>Let’s Review – What is useState? </h2>
-				<p>useState is a built-in React Hook that allows you to add state to functional components. Essentially,
-					it allows your component to "remember" values between renders.
-
-					You call useState with the initial value of the state. It returns a pair: the current state value
-					and a function to update it. This function updates the state and causes the component to re-render:
+				<span><img src="../images/Blog2/python-django.webp" alt="" /></span>
+				<h2>A Quick Django Overview</h2>
+				<p>Django is a Python framework used to easily create web sites using Python.
+					Django emphasizes reusability of components and comes with ready-to-use features like login system,
+					database connection and CRUD operations (Create Read Update Delete).
 				</p>
-				<img src="../images/Blog1/Picture1.png" />
-				<h2>How to update our state variables</h2>
-				<p>A direct way to update state variables can be seen below, but it’s not the best way to update state
-					variables that might have some complexity.</p>
-				<img src="../images/Blog1/Picture2.png" />
-				<p>setState updates are asynchronous. This means that JavaScript doesn't immediately update the current
-					state and re-render the component when setState is called. Instead, it schedules these operations
-					for future execution and proceeds to the next line of code. This future execution can lead to errors
-					when a subsequent state update depends on the change just scheduled.</p>
-				<h2>So, how do we update state?</h2>
-				<p>Well, we can update state based on the previous state. By passing a function to setState, we ensure
-					accurate updates even with asynchronous modifications. This function receives the previous state
-					value, performs the necessary state update operations, and returns the new state value. This is
-					called the functional method.</p>
-				<img src="../images/Blog1/Picture3.png" />
-				<h2>How do we update more complex variables?</h2>
-				<p>For objects, we can continue to update it using functional method along with the spread operator.</p>
-				<img src="../images/Blog1/Picture4.png" />
-				<p>Brackets are needed to key into the object correctly. Without brackets, the key will be a literal
-					string "key". Here, we are also using an implicit return with the outermost parenthesis. By using
-					curly brackets instead, we would need to add ‘return’ before the object itself.</p>
-				<h2>Condense Your Variables</h2>
-				<p>Don’t overuse state variables. You could potentially be adding tons of re-renders in your React
-					life-cycle. Instead, if logical, add them all into one object.
-
-					See how the code below takes up more space and can cause multiple re-renders:
+				<img src="../images/Blog2/Picture1.png" />
+				<h2>Django follows the MVT (Model-View-Template) design pattern.</h2>
+				<p>
+				<ul>
+					<li>Model - The data you want to present, usually data from a database.</li>
+					<li>View - A request handler that returns the relevant template and content - based on the request
+						from the user.</li>
+					<li>Template - A text file (like an HTML file) containing the layout of the web page, with logic
+						on how to display the data.</li>
+				</ul>
 				</p>
-				<img src="../images/Blog1/Picture5.png" />
-				<p>Instead, we can put our variables into a single object, and use our method for updating objects to
-					cut down on code:
+				<h2>Let’s create our app</h2>
+				<p>To build a Django project, we need to create a project and an app. A project is the entire web
+					application, while an app is a web application component that performs a specific function.</p>
+				<img src="../images/Blog2/Picture2.png" />
+				<p>This will create a project structure like this:</p>
+				<img src="../images/Blog2/Picture3.png" />
+				<p>We'll breakdown a few of these:
+				<ul>
+					<li>settings.py: Contains the project settings such as installed apps, middleware, and database
+						configuration.</li>
+					<li>urls.py: Maps URLs to views in the project, so Django knows what to do when a request comes into
+						a
+						particular URL pattern.</li>
+					<li>views.py: The views (functions) that handle HTTP requests and return responses.</li>
+					<li>models.py: Contains the database models for the app. We will cover this in future courses.</li>
+				</ul>
 				</p>
-				<img src="../images/Blog1/Picture6.png" />
+				<h2>Let’s focus on the Views for now.</h2>
+				<p>We define the view in views.py with a simple function home that returns an HTTP response:</p>
+				<img src="../images/Blog2/Picture4.png" />
+				<p>Next, we map this view to a URL in the project's urls.py file, using the path function:
+				</p>
+				<img src="../images/Blog2/Picture5.png" />
+				<p>The path basically maps the root URL, which is an empty string '', to the home view we defined in
+					myapp/views.py. This endpoint will return the text 'Hello World!' when we visit the root URL.
+				</p>
+				<h2>Important Notes:</h2>
+				<p><strong>views.home</strong> is referencing the home function defined in views.py. In Django, the
+					views function is
+					used to handle requests for specific URL paths.
+				<p>
+					<strong>urlpatterns</strong> is a list variable that Django expects to find. It contains a series of
+					Path() instances
+					that map URL patterns to their corresponding view functions or classes.
+				</p>
+				</p>
+				<h2>Let's run our code</h2>
+				<p> Once the project and app are created, you can run the development server using the following
+					command:
+				</p>
+				<img src="../images/Blog2/Picture6.png" />
+				<p>And we should see:</p>
+				<img src="../images/Blog2/Picture7.png" />
 				<footer>
 					<!-- <ul class="stats">
 						<li><a href="#">General</a></li>
