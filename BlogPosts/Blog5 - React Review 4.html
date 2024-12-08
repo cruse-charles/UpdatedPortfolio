@@ -103,12 +103,12 @@
 						<p>Taking a look back on some React foundamentals - Event Handling and Forms</p>
 					</div>
 					<div class="meta">
-						<time class="published" datetime="2024-10-17">Oct 17, 2024</time>
+						<time class="published" datetime="2024-12-17">December 17, 2024</time>
 						<!-- <a href="#" class="author"><span class="name">Jane Doe</span><img src="images/avatar.jpg"
 								alt="" /></a> -->
 					</div>
 				</header>
-				<span><img src="../images/Blog5/PhotoHeader.png" alt="" /></span>
+				<span><img src="../images/BlogImages/Blog5/PhotoHeader.png" alt="" /></span>
 				<h2>What is Event Handling?</h2>
 				<p>React allows us to respond to user interactions like clicks, input changes, mouse movements, etc. These are called events. React handles events 
                     in a way that's very similar to native DOM handling, but with a few important differences:
@@ -119,18 +119,18 @@
 				</p>
 				<h2>Handling a Button Click</h2>
 				<p>Here's a simple example of handling a button click event:</p>
-                <img src="../images/Blog5/Picture1.png" />
+                <img src="../images/BlogImages/Blog5/Picture1.png" />
                 <p>We defined a function handleClick that runs when the button is clicked. We passed that function to the onClick event of the button element. 
                     Note that we aren't invoking this function, simply passing a reference to it.</p>
 				<h2>Passing Arguments to Event Handlers</h2>
 				<p>Sometimes, you'll want to pass arguments to your event handler function. Here's how to do it:</p>
-				<img src="../images/Blog5/Picture2.png" />
+				<img src="../images/BlogImages/Blog5/Picture2.png" />
 				<p>We use an arrow function to pass the missionName prop into our handler. Without the arrow function, handleClick(missionName) would run immediately 
                     when the component renders.</p>
 				<h2>Handling Forms in React</h2>
 				<p>React requires us to manage input state ourselves through controlled components. That means React components are in charge of storing and updating 
                     the input's value. A controlled input is an input element whose value is tied to a piece of React state.</p>
-				<img src="../images/Blog5/Picture3.png" />
+				<img src="../images/BlogImages/Blog5/Picture3.png" />
 				<p>The value prop is what allows us to control this field. We are essentially saying: "This input box should always display whatever is stored 
                     in the astronaut variable."                    
 				</p>
@@ -149,7 +149,7 @@
 				<p>When handling multiple form inputs, it's common to store them in a single state object. This prevents us from making multiple state variables 
                     for each input field:
 				</p>
-                <img src="../images/Blog5/Picture4.PNG" />
+                <img src="../images/BlogImages/Blog5/Picture4.PNG" />
 				<p>Using one handler for multiple inputs is a clean way to manage complex forms. Depending on our code base, the handleChange function can be 
                     referenced in the onChange prop form tag itself, which will bubble up. As long as we have matching name props for each input field, it will 
                     still work properly with updating state.

@@ -103,12 +103,12 @@
 						<p>Taking a look back on some React foundamentals - Props</p>
 					</div>
 					<div class="meta">
-						<time class="published" datetime="2024-10-07">Oct 7, 2024</time>
+						<time class="published" datetime="2024-12-07">December 7, 2024</time>
 						<!-- <a href="#" class="author"><span class="name">Jane Doe</span><img src="images/avatar.jpg"
 								alt="" /></a> -->
 					</div>
 				</header>
-				<span><img src="../images/Blog4/PhotoHeader.png" alt="" /></span>
+				<span><img src="../images/BlogImages/Blog4/PhotoHeader.png" alt="" /></span>
 				<h2>What are props?</h2>
 				<p>Short for properties, props are used to pass around information. React components are just JavaScript functions, and like all functions, 
 					they can receive arguments. In React, those arguments come in the form of a single props object. To better understand, consider props 
@@ -116,25 +116,25 @@
 				</p>
 				<p>We can pass primitive data types as well as objects and functions. We can also set a default prop in case nothing is passed down.</p>
 				<h2>Basic Props Example</h2>
-				<img src="../images/Blog4/Picture1.png" />
+				<img src="../images/BlogImages/Blog4/Picture1.png" />
 				<p>Here, if the name prop isn't passed, the component will default to displaying Galactic Traveler. This is useful for ensuring your
 					 components remain resilient and don't break from missing data.
 				</p>
 				<h2>Passing Functions as Props</h2>
 				<p>Props aren't limited to static data, you can also pass functions. When we pass a function from parent to child, we can call it in the child component. 
 					This pattern is essential for child-to-parent communication in React:</p>
-				<img src="../images/Blog4/Picture2.png" />
+				<img src="../images/BlogImages/Blog4/Picture2.png" />
 				<p>In this example, the Thruster can now use the startThrusters method that's actually defined in the Spaceship component. When the button in the Thruster 
 					component is clicked, it will call startThrusters, and print "Thrusters are ON" to the console.</p>
 				<h2>Destructuring Props</h2>
 				<p>This lets us unpack properties from objects or arrays right in our function signature. Instead of always writing props.name, props.status, etc., 
 					you can destructure props directly in the function parameter:</p>
-				<img src="../images/Blog4/Picture3.png" />
+				<img src="../images/BlogImages/Blog4/Picture3.png" />
 				<h2>props.children</h2>
 				<p>React gives us a special prop called children. Props.children allows developers to pass components as properties. This feature is particularly beneficial 
 					for creating 'wrapper' components.
 				</p>
-				<img src="../images/Blog4/Picture4.png" />
+				<img src="../images/BlogImages/Blog4/Picture4.png" />
 				<p>Here, the Box component acts as a container or wrapper. It doesn't know what will be inside—it just renders whatever is passed to it via props.children. 
 					This is a core pattern for creating reusable components.
 				</p>
@@ -144,12 +144,12 @@
 				<p>Parent Component:
 					This App component uses state to track a word and passes down handlers for updating and resetting that state.
 				</p>
-				<img src="../images/Blog4/Picture5.png" />
+				<img src="../images/BlogImages/Blog4/Picture5.png" />
 				<p>Child Component
 					This Word component uses the props it receives to: display the current word, update the parent's state when input changes, 
 					and reset the word when clicked.
 				</p>
-				<img src="../images/Blog4/Picture6.png" />
+				<img src="../images/BlogImages/Blog4/Picture6.png" />
 				<h2>Data Flow</h2>
 					<p>From Parent to Child:</p>
 					<ol>
