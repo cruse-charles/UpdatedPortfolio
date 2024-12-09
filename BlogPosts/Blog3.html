@@ -1,0 +1,214 @@
+<!DOCTYPE HTML>
+<!--
+	Future Imperfect by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+
+<head>
+	<title>Single - Future Imperfect by HTML5 UP</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="stylesheet" href="../assets/css/main.css" />
+</head>
+
+<body class="single is-preload">
+
+	<!-- Wrapper -->
+	<div id="wrapper">
+
+		<!-- Header -->
+		<header id="header">
+			<h1><a href="../index.html">Portfolio Site of Charles Cruse</a></h1>
+			<nav class="links">
+				<ul>
+					<li><a href="../aboutme.html">About Me</a></li>
+					<li><a href="../assets/Charles_Cruse_Resume.pdf">Resume</a></li>
+					<!-- <li><a href="#">Projects</a></li> -->
+				</ul>
+			</nav>
+			<!-- <nav class="main">
+                <ul>
+                    <li class="search">
+                        <a class="fa-search" href="#search">Search</a>
+                        <form id="search" method="get" action="#">
+                            <input type="text" name="query" placeholder="Search" />
+                        </form>
+                    </li>
+                    <li class="menu">
+                        <a class="fa-bars" href="#menu">Menu</a>
+                    </li>
+                </ul>
+            </nav> -->
+		</header>
+
+		<!-- Menu -->
+		<section id="menu">
+
+			<!-- Search -->
+			<!-- <section>
+				<form class="search" method="get" action="#">
+					<input type="text" name="query" placeholder="Search" />
+				</form>
+			</section> -->
+
+			<!-- Links -->
+			<!-- <section>
+				<ul class="links">
+					<li>
+						<a href="#">
+							<h3>Lorem ipsum</h3>
+							<p>Feugiat tempus veroeros dolor</p>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<h3>Dolor sit amet</h3>
+							<p>Sed vitae justo condimentum</p>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<h3>Feugiat veroeros</h3>
+							<p>Phasellus sed ultricies mi congue</p>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<h3>Etiam sed consequat</h3>
+							<p>Porta lectus amet ultricies</p>
+						</a>
+					</li>
+				</ul>
+			</section> -->
+
+			<!-- Actions -->
+			<!-- <section>
+				<ul class="actions stacked">
+					<li><a href="#" class="button large fit">Log In</a></li>
+				</ul>
+			</section> -->
+
+		</section>
+
+		<!-- Main -->
+		<div id="main">
+
+			<!-- Post -->
+			<article class="post">
+				<header>
+					<div class="title">
+						<h2><a href="#">Reviewing React #1</a></h2>
+						<p>Taking a look back on some React foundamentals - useEffect</p>
+					</div>
+					<div class="meta">
+						<time class="published" datetime="2015-11-01">September 25, 2024</time>
+						<!-- <a href="#" class="author"><span class="name">Jane Doe</span><img src="images/avatar.jpg"
+								alt="" /></a> -->
+					</div>
+				</header>
+				<span><img src="../images/Blog3/PhotoHeader.png" alt="" /></span>
+				<h2>A Quick Intro to useEffect</h2>
+				<p>By using this Hook, you tell React that your component needs to do something after rendering. Some
+					examples of what it can be used for: fetching data, directly updating the DOM, and timers.
+				</p>
+				<h2>What goes into a useEffect function?</h2>
+				<p>useEffect accepts two arguments, with the second argument being optional.
+					useEffect(function, dependency)
+					The function argument is a callback function and is what our code will be performing, and
+					it'll run according to the second argument, the dependency.
+					There are three inputs into the dependency argument:
+
+				<ul>
+					<li> Without an argument, the function will run on every render.</li>
+					<li>With an empty array, the function runs only once, after mounting.</li>
+					<li>With a variable in the array, the function runs only when that variable is changed. Multiple
+						variables can be added to the array too.</li>
+				</ul>
+				</p>
+				<img src="../images/Blog3/Picture1.png" />
+				<h2>Component LifeCycle</h2>
+				<p>Each component has a life cycle that is monitored by React. This life cycle refers to when we see a
+					component on a website to when we no longer see it. The lifecycle consists of three phases:</p>
+				<p>Mounting: This is the point at which a component's life commences. By using useEffect and specifying
+					an empty array [] as the dependency, the effect runs once after the initial render.</p>
+				<p>Updating: Throughout a component's lifetime, it may update according to changes in state and props.
+					All the data the effect needs to 'watch' should be specified in the dependency array.
+				</p>
+				<p>Unmounting: When a component is no longer needed, it's removed. A cleanup function returned from the
+					effect
+					helps prevent memory leaks during this phase (more on this in a moment).
+				</p>
+				<img src="../images/Blog3/Picture2.png" />
+				<h2>What is a cleanup function?</h2>
+				<p>Imagine your code sets up a subscription in a component. But aligning with the natural lifecycle, our
+					component might be removed from the DOM at some point. If our component is gone but our subscription
+					is still active, we have a problem -- this is a memory leak!</p>
+				<p>Memory leaks subtly eat up your system resources and can cause your application to slow down or
+					crash. Hence, it's important to clean up your task if the component unmounts during the effect's
+					lifecycle.
+				</p>
+				<p>The cleanup part of useEffect comes into play here. Upon returning a function from a useEffect hook,
+					React interprets this as a cleanup function and invokes it before the component is removed from the
+					UI to prevent memory leaks.
+				</p>
+				<h2>Let's show an example of fetching data and having a cleanup function</h2>
+				<p>Here, we are using our useEffect to fetch data for this component. Here we are fetching data based on
+					the id of the item that the user is looking at, which could be a post or a comment or anything else.
+					Here, we are getting a post that matches the id.
+				</p>
+				<img src="../images/Blog3/Picture3.png" />
+				<p>But what if we have a button that is linked to using this fetching of data? And what if we click it
+					really fast over and over? That's where a cleanup can come in. If a user clicks 5 times super fast,
+					the component will re-render 5 times and it's not a great user experience because we are just going
+					to see the post that returns either first or last if we are just getting a random post. So we want
+					to control that better, by aborting fetch requests if they aren't finished if a user has clicked
+					many times.
+				</p>
+				<img src="../images/Blog3/Picture4.png" />
+				<p>This here will make sure that a fetch is aborted by running the clean-up feature of useEffect that
+					will abort our fetch request. Now when we click 5 times super fast, we will just get one post
+					rendered.</p>
+				<h2>So when do we use this?</h2>
+				<p>Well, it's not too common to use this outside of personal projects. There are libraries that do a lot
+					of this work as well for us, from caching to loading states
+					to fetching data to cleanups, such as SWR Vercel or React Query. We'll take a look at these later!
+					But it's important that we know what this stuff is doing under the hood!
+				</p>
+				<footer>
+					<!-- <ul class="stats">
+						<li><a href="#">General</a></li>
+						<li><a href="#" class="icon solid fa-heart">28</a></li>
+						<li><a href="#" class="icon solid fa-comment">128</a></li>
+					</ul> -->
+				</footer>
+			</article>
+
+		</div>
+
+		<!-- Footer -->
+		<section id="footer">
+			<ul class="icons">
+				<li><a href="https://www.linkedin.com/in/charles-cruse-2ba72ab6/"
+						class="icon brands fa-linkedin fa-lg"><span class="label">LinkedIn</span></a></li>
+				<li><a href="https://github.com/cruse-charles" class="icon brands fa-github fa-lg"><span
+							class="label">Github</span></a></li>
+				<li><a href="mailto:charlesncruse@gmail.com" class="icon solid fa-envelope fa-lg"><span
+							class="label">Email</span></a></li>
+			</ul>
+			<p class="copyright">&copy; Untitled. Design: <a href="http://html5up.net">HTML5 UP</a>.
+		</section>
+
+	</div>
+
+	<!-- Scripts -->
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/browser.min.js"></script>
+	<script src="assets/js/breakpoints.min.js"></script>
+	<script src="assets/js/util.js"></script>
+	<script src="assets/js/main.js"></script>
+
+</body>
+
+</html>
