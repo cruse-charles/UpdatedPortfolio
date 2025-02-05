@@ -1,0 +1,349 @@
+<!DOCTYPE HTML>
+<!--
+	Future Imperfect by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+
+<head>
+	<title>Single - Future Imperfect by HTML5 UP</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="stylesheet" href="../assets/css/main.css" />
+	<link href="https://cdn.jsdelivr.net/npm/prismjs@1/themes/prism-okaidia.css" rel="stylesheet" />
+</head>
+
+<body class="single is-preload">
+
+	<!-- Wrapper -->
+	<div id="wrapper">
+
+		<!-- Header -->
+		<header id="header">
+			<h1><a href="../index.html">Portfolio Site of Charles Cruse</a></h1>
+			<nav class="links">
+				<ul>
+					<li><a href="../aboutme.html">About Me</a></li>
+					<li><a href="../assets/Charles_Cruse_Resume.pdf">Resume</a></li>
+					<!-- <li><a href="#">Projects</a></li> -->
+				</ul>
+			</nav>
+			<!-- <nav class="main">
+                <ul>
+                    <li class="search">
+                        <a class="fa-search" href="#search">Search</a>
+                        <form id="search" method="get" action="#">
+                            <input type="text" name="query" placeholder="Search" />
+                        </form>
+                    </li>
+                    <li class="menu">
+                        <a class="fa-bars" href="#menu">Menu</a>
+                    </li>
+                </ul>
+            </nav> -->
+		</header>
+
+		<!-- Menu -->
+		<section id="menu">
+
+			<!-- Search -->
+			<!-- <section>
+				<form class="search" method="get" action="#">
+					<input type="text" name="query" placeholder="Search" />
+				</form>
+			</section> -->
+
+			<!-- Links -->
+			<!-- <section>
+				<ul class="links">
+					<li>
+						<a href="#">
+							<h3>Lorem ipsum</h3>
+							<p>Feugiat tempus veroeros dolor</p>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<h3>Dolor sit amet</h3>
+							<p>Sed vitae justo condimentum</p>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<h3>Feugiat veroeros</h3>
+							<p>Phasellus sed ultricies mi congue</p>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<h3>Etiam sed consequat</h3>
+							<p>Porta lectus amet ultricies</p>
+						</a>
+					</li>
+				</ul>
+			</section> -->
+
+			<!-- Actions -->
+			<!-- <section>
+				<ul class="actions stacked">
+					<li><a href="#" class="button large fit">Log In</a></li>
+				</ul>
+			</section> -->
+
+		</section>
+
+		<!-- Main -->
+		<div id="main">
+
+			<!-- Post -->
+			<article class="post">
+				<header>
+					<div class="title">
+						<h2><a href="#">Build With Me #3 - NextJS Project</a></h2>
+						<p>See how I build a web app as I learn a new technology</p>
+					</div>
+					<div class="meta">
+						<time class="published" datetime="2025-02-03">February 3, 2025</time>
+						<!-- <a href="#" class="author"><span class="name">Jane Doe</span><img src="images/avatar.jpg"
+								alt="" /></a> -->
+					</div>
+				</header>
+				<span><img src="../images/BlogImages/Blog6/PhotoHeader.webp" alt="" /></span>
+				<h2>What I Did This Week</h2>
+				<p>
+					I've been steadily building out a “Learn 2 Code” app using Next.js, and one of my goals was to support DSA-style questions. 
+					Although I will add some functionality so that it isn't just a copy/paste of the website, I do need the basic 
+					problem-solving aspect of this website. So, I took on dynamic routing, MongoDB querying, and client-side code execution.
+				</p>
+				<h2>Creating Dynamic Routes for Problem Pages</h2>
+				<p>
+					Next.js makes it easy to create dynamic pages by using brackets in your folder structure. I wanted to load a 
+					different coding problem depending on the title in the URL — for example:
+					<br>
+					/dsa/valid-parentheses → loads the problem titled valid-parentheses.
+					<br>
+					To do this, I created this file:
+					<br>
+					<strong>/app/dsa/[title]/page.tsx</strong>
+					<br>
+					Here's the basic logic:
+					<pre><code class="language-tsx">
+						import SplitPaneComponent from "../SplitPaneComponent";
+
+						export default async function page({ params }: { params: { title: string } }) {
+						const { title } = params;
+
+						const response = await fetch(`http://localhost:3000/api/dsa?title=${title}`);
+						const question = await response.json();
+
+						return <SplitPaneComponent question={question} />;
+						}
+					</code></pre>
+					This page will obviously have user functionality, meaning I'll need to use a client component for this
+					 part of the problem, but I wanted to make sure I did as much as I could on the server side. I had to 
+					 create a parent component so I could fetch the question on the server side and then pass it down to 
+					 a child component where I could then split up the functionality that required user interaction and the data 
+					 that would just be retrieved from the server side.
+				</p>
+				<h2>Creating a Custom API Route with Query Parameters</h2>
+				<p>
+					To fetch a specific problem from MongoDB, I made an API route:
+					<br>
+					<strong>/app/api/dsa/route.ts</strong>
+					<br>
+					This route grabs the title from the URL query string and uses a helper function to fetch the question:
+					<pre><code class="language-tsx">
+						import { NextResponse } from 'next/server';
+						import { getQuestion } from '@/lib/mongo/dsa';
+
+						export async function GET(req: Request) {
+						const { searchParams } = new URL(req.url);
+						const title = searchParams.get('title');
+
+						try {
+							const question = await getQuestion(title as string);
+							if (!question) {
+							return NextResponse.json({ error: 'Question not found' }, { status: 404 });
+							}
+							return NextResponse.json(question, { status: 200 });
+						} catch (error) {
+							console.error('Error fetching question:', error);
+							return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+						}
+						}
+					</code></pre>
+					Even though I could have just called getQuestion() directly in the page.tsx file, I chose to go through an API 
+					route to standardize my data fetching patterns, especially since I might later add POST or PATCH endpoints for 
+					submitting answers or storing user results.
+				</p>
+                <h2>MongoDB Document Structure</h2>
+				<p>
+					Here's what a sample document looks like in my dsa collection:
+					<br>
+					<pre><code class="language-tsx">
+					{
+						"title": "valid-parentheses",
+						"description": "Given a string s containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid...",
+						"descriptionExamples": {
+							"input": ["s = \"()\"", "s = \"(]\""],
+							"explanation": ["Return true because the parentheses are matched correctly.", "Return false because they are not."],
+							"output": ["true", "false"]
+						},
+						"starterCode": "function isValid(s) {\n  // Your code here\n};",
+						"testCases": [
+							{ "input": "()", "expected": true },
+							{ "input": "(]", "expected": false }
+						]
+					}
+					</code></pre>
+					Each problem includes:
+					<ul>
+						<li>A title (used in the URL and as the primary identifier)</li>
+						<li>A detailed description</li>
+						<li>Examples (input, output, explanation)</li>
+						<li>Starter code</li>
+						<li>Test cases to validate the user's solution</li>
+					</ul>
+					It's a bit annoying to make this structure where I have arrays of objects and objects of made of arrays. 
+					But at the end, it's what's going to make the frontend the easiest to code out if I can get all my questions 
+					to conform to this style.
+				</p>
+				<h2>Building the Right Pane: Code Editor with Execution</h2>
+				<p>Since my code editor uses CodeMirror and only works client-side, I had to isolate it into its own component. 
+					Something cool I did, I didn't know you could dynamically create a function from a string using new Function() 
+					and then immediately invoke it.
+					<br><br>
+					Here's what happens:
+					<ul>
+						<li>new Function() creates a function that returns the user's code.</li>
+						<li>Immediately invoking it () gives you the actual executable function object.</li>
+						<li>Without the invocation, you'd just have the wrapper function, not what user actually wrote. I'd just get a 
+							function that returns the user's function, not the function itself. It took a bit of experimentation and 
+							logging to figure out why nothing was running.</li>
+					</ul>
+					Here's my /components/RightPane.tsx:
+					<pre><code class="language-tsx">
+						'use client';
+
+						import { useState } from 'react';
+						import CodeMirror from '@uiw/react-codemirror';
+						import { javascript } from '@codemirror/lang-javascript';
+						import { submitSolution } from '@/libutils/submitSolution';
+
+						interface RightPaneProps {
+						starterCode: string;
+						testCases: { input: any; expected: any }[];
+						}
+
+						function RightPane({ starterCode, testCases }: RightPaneProps) {
+						const [userCode, setUserCode] = useState(starterCode);
+
+						const handleSubmit = () => {
+							const userFunction = new Function(`return ${userCode}`)();
+							const results = submitSolution(userFunction, testCases);
+							// TODO: Render results for user
+						};
+
+						return (
+							&lt;div&gt;
+							&lt;CodeMirror 
+								value={starterCode}
+								extensions={[javascript()]}
+								onChange={setUserCode}
+								className="cm cm-content"
+							/&gt;
+							&lt;button 
+								onClick={handleSubmit} 
+								className="bg-violet-500 text-white px-4 py-2 rounded-md mt-4"
+							&gt;
+								Run Code
+							&lt;/button&gt;
+							&lt;/div&gt;;
+						);
+						}
+
+						export default RightPane;
+					</code></pre>
+				</p>
+				<h2>Running the Test Cases</h2>
+				<p>
+					<pre><code class="language-tsx">
+						export function submitSolution(fn: (...args: any[]) => any, testCases: TestCase[]): TestResult[] {
+							const results = [];
+
+							for (const { input, expected } of testCases) {
+								const result = Array.isArray(input) ? fn(...input) : fn(input);
+								const isCorrect = JSON.stringify(result) === JSON.stringify(expected);
+								
+								results.push({ input, expected, result, isCorrect });
+							}
+							return results;					
+						}
+					</code></pre>
+					This utility:
+					<ul>
+						<li>Handles both single and multiple input values, as well as inputs of strings or arrays.</li>
+						<li>Compares the output using JSON.stringify for deep equality</li>
+					</ul>
+					I first had it accept only arrays since my first problem was two-sum, then when I added a string problem, 
+					I had a bit of an issue with applying the testcase parameters correctly to the function. I'm trying to create
+					 an MVP for this function because I know I'll need to improve this to handle edge cases, error handling, or async 
+					 problems later. But right now, I just want it to work with what it's given.
+				</p>
+				<h2>Challenges and Reflections</h2>
+				<ul>
+					<li>Parsing query parameters from the URL in the API route was cleaner than I expected.</li>
+					<li>Nesting properties in MongoDB is annoying, but it definitely is worth it to keep the frontend clean. 
+						After a few example questions, I got the hang of it too.</li>
+					<li>Building a function to evaluate a function was interesting to do, I'd like to try to go deeper into things like 
+						this and promises.</li>
+					<li>Splitting server and client logic was interesting, trying to get as little code on the client side as possible
+						 and having the rest on the server side.</li>
+				</ul>
+				<h2>What's Next?</h2>
+				<p>
+					<ul>
+						<li>Add more complex schemas to support topics, difficulty levels, and tags.</li>
+						<li>Show submission results (green for passed, red for failed).</li>
+						<li>Explore creating user videos so they can see how they solve problems in an interview.</li>
+					</ul>
+				</p>
+				<footer>
+					<!-- <ul class="stats">
+						<li><a href="#">General</a></li>
+						<li><a href="#" class="icon solid fa-heart">28</a></li>
+						<li><a href="#" class="icon solid fa-comment">128</a></li>
+					</ul> -->
+				</footer>
+			</article>
+
+		</div>
+
+		<!-- Footer -->
+		<section id="footer">
+			<ul class="icons">
+				<li><a href="https://www.linkedin.com/in/charles-cruse-2ba72ab6/"
+						class="icon brands fa-linkedin fa-lg"><span class="label">LinkedIn</span></a></li>
+				<li><a href="https://github.com/cruse-charles" class="icon brands fa-github fa-lg"><span
+							class="label">Github</span></a></li>
+				<li><a href="mailto:charlesncruse@gmail.com" class="icon solid fa-envelope fa-lg"><span
+							class="label">Email</span></a></li>
+			</ul>
+			<p class="copyright">&copy; Untitled. Design: <a href="http://html5up.net">HTML5 UP</a>.
+		</section>
+
+	</div>
+
+	<!-- Scripts -->
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/browser.min.js"></script>
+	<script src="assets/js/breakpoints.min.js"></script>
+	<script src="assets/js/util.js"></script>
+	<script src="assets/js/main.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-core.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/prismjs@1/plugins/autoloader/prism-autoloader.min.js"></script>
+
+</body>
+
+</html>
