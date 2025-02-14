@@ -1,0 +1,254 @@
+<!DOCTYPE HTML>
+<!--
+	Future Imperfect by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+
+<head>
+	<title>Single - Future Imperfect by HTML5 UP</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="stylesheet" href="../assets/css/main.css" />
+	<link href="https://cdn.jsdelivr.net/npm/prismjs@1/themes/prism-okaidia.css" rel="stylesheet" />
+</head>
+
+<body class="single is-preload">
+
+	<!-- Wrapper -->
+	<div id="wrapper">
+
+		<!-- Header -->
+		<header id="header">
+			<h1><a href="../index.html">Portfolio Site of Charles Cruse</a></h1>
+			<nav class="links">
+				<ul>
+					<li><a href="../aboutme.html">About Me</a></li>
+					<li><a href="../assets/Charles_Cruse_Resume.pdf">Resume</a></li>
+					<!-- <li><a href="#">Projects</a></li> -->
+				</ul>
+			</nav>
+			<!-- <nav class="main">
+                <ul>
+                    <li class="search">
+                        <a class="fa-search" href="#search">Search</a>
+                        <form id="search" method="get" action="#">
+                            <input type="text" name="query" placeholder="Search" />
+                        </form>
+                    </li>
+                    <li class="menu">
+                        <a class="fa-bars" href="#menu">Menu</a>
+                    </li>
+                </ul>
+            </nav> -->
+		</header>
+
+		<!-- Menu -->
+		<section id="menu">
+
+			<!-- Search -->
+			<!-- <section>
+				<form class="search" method="get" action="#">
+					<input type="text" name="query" placeholder="Search" />
+				</form>
+			</section> -->
+
+			<!-- Links -->
+			<!-- <section>
+				<ul class="links">
+					<li>
+						<a href="#">
+							<h3>Lorem ipsum</h3>
+							<p>Feugiat tempus veroeros dolor</p>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<h3>Dolor sit amet</h3>
+							<p>Sed vitae justo condimentum</p>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<h3>Feugiat veroeros</h3>
+							<p>Phasellus sed ultricies mi congue</p>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<h3>Etiam sed consequat</h3>
+							<p>Porta lectus amet ultricies</p>
+						</a>
+					</li>
+				</ul>
+			</section> -->
+
+			<!-- Actions -->
+			<!-- <section>
+				<ul class="actions stacked">
+					<li><a href="#" class="button large fit">Log In</a></li>
+				</ul>
+			</section> -->
+
+		</section>
+
+		<!-- Main -->
+		<div id="main">
+
+			<!-- Post -->
+			<article class="post">
+				<header>
+					<div class="title">
+						<h2><a href="#">Build With Me #4 - NextJS Project</a></h2>
+						<p>See how I build a web app as I learn a new technology</p>
+					</div>
+					<div class="meta">
+						<time class="published" datetime="2025-02-13">February 13, 2025</time>
+						<!-- <a href="#" class="author"><span class="name">Jane Doe</span><img src="images/avatar.jpg"
+								alt="" /></a> -->
+					</div>
+				</header>
+				<span><img src="../images/BlogImages/Blog6/PhotoHeader.webp" alt="" /></span>
+				<h2>What I Did This Week</h2>
+				<p>
+					This week's progress on my Learn-to-Code platform included a mix of small but important refactors, 
+					styling, and researching for a major feature upgrade: recording a user's screen and webcam as they solve problems.
+				</p>
+				<h2>Fixing Example Rendering Logic</h2>
+				<p>
+					Originally, my DSA problems in MongoDB stored example information as arrays inside a descriptionExamples object. 
+					So in my frontend, I looped through the input, output, and explanation arrays by index:
+					<pre><code class="language-tsx">
+						// Examples section, iterate through example information
+						<h3 className="text-lg font-semibold text-slate-800 mb-2">Examples:</h3>
+						{descriptionExamples.input.map((_, index) => (
+						&lt;div className='mb-4 bg-slate-50 p-4 rounded-md' key={index}&gt;
+							&lt;div className="mb-2"&gt;
+							&lt;div&gt;Input: {descriptionExamples.input[index]}&lt;/div&gt;
+							&lt;/div&gt;
+							&lt;div className="mb-2"&gt;
+							&lt;div&gt;Output: {descriptionExamples.output[index]}&lt;/div&gt;
+							&lt;/div&gt;
+							&lt;div className="mb-2"&gt;
+							&lt;div&gt;Explanation: {descriptionExamples.explanation[index]}&lt;/div&gt;
+							&lt;/div&gt;
+						&lt;/div&gt;
+						))}
+					</code></pre>
+					It worked, but as I added more problems, I realized this structure was both awkward to iterate through 
+					and prone to bugs if the array lengths got out of sync. It also made updates in MongoDB a pain.
+				</p>
+				<p>I refactored the data structure to use an array of objects instead:</p>
+				<pre><code class="language-tsx">
+					"descriptionExamples": [
+					{
+						"input": "s = '()'",
+						"output": "true",
+						"explanation": "The parentheses are matched correctly."
+					},
+					...
+					]
+				</code></pre>
+				<p>Then in the frontend, it was much cleaner:</p>
+				<pre><code class="language-tsx">
+					{descriptionExamples.map((example) => (
+					&lt;div className='mb-4 bg-slate-50 p-4 rounded-md'&gt;
+						&lt;div&gt;Input: {example.input}&lt;/div&gt;
+						&lt;div&gt;Output: {example.output}&lt;/div&gt;
+						&lt;div&gt;Explanation: {example.explanation}&lt;/div&gt;
+					&lt;/div&gt;
+					))}
+				</code></pre>
+				<p>Changing the database format was a bit tedious, but thankfully I only had four questions to update. Definitely 
+					the right call in the long run.</p>
+				<h2>Checking Output and Providing Feedback</h2>
+				<p>
+					Another win this week was finishing up the code submission UI. Now when users write a solution and click “Run Code,” the system:
+					<ol>
+						<li>Runs the function with multiple test cases.</li>
+						<li>Checks the results against expected outputs.</li>
+						<li>Shows clear success/failure feedback.</li>
+					</ol>
+				
+				Right now, Im showing a simple pass/fail per case, but I plan to enhance it with:
+				
+					<ul>
+						<li>User console.log() output</li>
+						<li>Runtime errors with error messages</li>
+						<li>Possibly syntax highlighting for failed outputs</li>
+					</ul>
+					The feedback loop is almost complete, and it's already feeling satisfying to use.
+				</p>
+                <h2>Planning a Recording Feature for Live Practice</h2>
+				<p>
+					Here's the next big goal:
+
+					Add a <strong>"Record" button</strong> to let users film themselves solving problems — both screen and webcam.
+					<br><br>
+					The vision is simple but hopefully powerful in helping people see how they act and explain their code instead of just what their code is.
+					It's part mock interview practice, part personal coaching tool. High level, it'lls do the following:
+					<ul>
+						<li>You press record.</li>
+						<li>Your screen and webcam are captured as you solve a coding problem.</li>
+						<li>The video is saved locally.</li>
+						<li>You can watch your performance, observe your communication style, debug habits, and even review how you talk through problems.</li>
+					</ul>
+					I'm mostly doing this because in real interviews, it's not just about code, it;s how you think, speak, and carry yourself 
+					as well. Recording that process gives users a way to analyze and improve their overall performance, not just their algorithm 
+					skills.
+					<br><br>
+				<h2>Choosing a Recording Approach: MediaRecorder API</h2>
+				<p>I've started looking into how to implement this, and the MediaRecorder API looks like a solid path for a few reasons:
+					<ul>
+						<li>Native to the browser, no extra packages required</li>
+						<li>Supports both webcam (navigator.mediaDevices.getUserMedia) and screen (navigator.mediaDevices.getDisplayMedia)</li>
+						<li>Allows saving to .webm or .mp4 and downloading to the user's computer</li>
+					</ul>
+					<br><br>
+				<h2>What's Next?</h2>
+				<p>
+					<ul>
+						<li>Finish console/error feedback in the submission view.</li>
+						<li>Try a working prototype of the recording feature with screen + webcam.</li>
+						<li>Continue adding more advanced DSA problems and categorize by difficulty.</li>
+					</ul>
+				</p>
+				<footer>
+					<!-- <ul class="stats">
+						<li><a href="#">General</a></li>
+						<li><a href="#" class="icon solid fa-heart">28</a></li>
+						<li><a href="#" class="icon solid fa-comment">128</a></li>
+					</ul> -->
+				</footer>
+			</article>
+
+		</div>
+
+		<!-- Footer -->
+		<section id="footer">
+			<ul class="icons">
+				<li><a href="https://www.linkedin.com/in/charles-cruse-2ba72ab6/"
+						class="icon brands fa-linkedin fa-lg"><span class="label">LinkedIn</span></a></li>
+				<li><a href="https://github.com/cruse-charles" class="icon brands fa-github fa-lg"><span
+							class="label">Github</span></a></li>
+				<li><a href="mailto:charlesncruse@gmail.com" class="icon solid fa-envelope fa-lg"><span
+							class="label">Email</span></a></li>
+			</ul>
+			<p class="copyright">&copy; Untitled. Design: <a href="http://html5up.net">HTML5 UP</a>.
+		</section>
+
+	</div>
+
+	<!-- Scripts -->
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/browser.min.js"></script>
+	<script src="assets/js/breakpoints.min.js"></script>
+	<script src="assets/js/util.js"></script>
+	<script src="assets/js/main.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-core.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/prismjs@1/plugins/autoloader/prism-autoloader.min.js"></script>
+
+</body>
+
+</html>
