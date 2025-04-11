@@ -1,0 +1,293 @@
+<!DOCTYPE HTML>
+<!--
+	Future Imperfect by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+
+<head>
+	<title>Single - Future Imperfect by HTML5 UP</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="stylesheet" href="../assets/css/main.css" />
+	<link href="https://cdn.jsdelivr.net/npm/prismjs@1/themes/prism-okaidia.css" rel="stylesheet" />
+</head>
+
+<body class="single is-preload">
+
+	<!-- Wrapper -->
+	<div id="wrapper">
+
+		<!-- Header -->
+		<header id="header">
+			<h1><a href="../index.html">Portfolio Site of Charles Cruse</a></h1>
+			<nav class="links">
+				<ul>
+					<li><a href="../aboutme.html">About Me</a></li>
+					<li><a href="../assets/Charles_Cruse_Resume.pdf">Resume</a></li>
+					<!-- <li><a href="#">Projects</a></li> -->
+				</ul>
+			</nav>
+			<!-- <nav class="main">
+                <ul>
+                    <li class="search">
+                        <a class="fa-search" href="#search">Search</a>
+                        <form id="search" method="get" action="#">
+                            <input type="text" name="query" placeholder="Search" />
+                        </form>
+                    </li>
+                    <li class="menu">
+                        <a class="fa-bars" href="#menu">Menu</a>
+                    </li>
+                </ul>
+            </nav> -->
+		</header>
+
+		<!-- Menu -->
+		<section id="menu">
+
+			<!-- Search -->
+			<!-- <section>
+				<form class="search" method="get" action="#">
+					<input type="text" name="query" placeholder="Search" />
+				</form>
+			</section> -->
+
+			<!-- Links -->
+			<!-- <section>
+				<ul class="links">
+					<li>
+						<a href="#">
+							<h3>Lorem ipsum</h3>
+							<p>Feugiat tempus veroeros dolor</p>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<h3>Dolor sit amet</h3>
+							<p>Sed vitae justo condimentum</p>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<h3>Feugiat veroeros</h3>
+							<p>Phasellus sed ultricies mi congue</p>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<h3>Etiam sed consequat</h3>
+							<p>Porta lectus amet ultricies</p>
+						</a>
+					</li>
+				</ul>
+			</section> -->
+
+			<!-- Actions -->
+			<!-- <section>
+				<ul class="actions stacked">
+					<li><a href="#" class="button large fit">Log In</a></li>
+				</ul>
+			</section> -->
+
+		</section>
+
+		<!-- Main -->
+		<div id="main">
+
+			<!-- Post -->
+			<article class="post">
+				<header>
+					<div class="title">
+						<h2><a href="#">Building A Real App #2</a></h2>
+						<p>Follow along with my journey to build a real app</p>
+					</div>
+					<div class="meta">
+						<time class="published" datetime="2025-03-10">April 10, 2025</time>
+						<!-- <a href="#" class="author"><span class="name">Jane Doe</span><img src="images/avatar.jpg"
+								alt="" /></a> -->
+					</div>
+				</header>
+				<span><img src="../images/BlogImages/Blog6/PhotoHeader.webp" alt="" /></span>
+				<h2>Exploring Firebase Auth: Sign-Up, Login, and Handling currentUser in a Real App</h2>
+				<p>
+					One big reason I've chosen Firebase as a new technology to try while building this app is because I've seen in 
+					videos how easy it can help with Auth, which I honestly hate building. Getting Auth figured out is always one 
+					of the earliest steps you have to do when making a site with users. So let's take a look at what I learned 
+					while building out this platform.
+				</p>
+				<h2>Sign In with Email/Password and Google</h2>
+				<p>
+					As I create the auth portion on the firebase website, I'm asked to select what methods I want to let people log 
+					in with, so I chose email/password or Google. Implementing this was super easy, just by following the docs and 
+					using a few functions, I was able to get a fully functioning auth. Here's a core snippet:
+				<pre><code class="language-tsx">
+					const auth = getAuth(app);
+					const googleProvider = new GoogleAuthProvider();
+
+					signInWithEmailAndPassword(auth, userData.email, userData.password)
+					.then((userCredential) => {
+						console.log(userCredential)
+					})
+					.catch((error) => {
+						console.log(error.message)
+					});
+
+					signInWithPopup(auth, googleProvider)
+					.then((result) => {
+						console.log(result)
+					})
+					.catch((error) => {
+						console.log(error.message)
+					});
+				</code></pre>
+				<p>Obviously later I will make sure this isn't console logged, and I think I'll stay away from using .then callbacks, 
+					but just used it for now to follow the Firebase documentation. </p>
+				<h2>Sign-Up with Email and Store in Firestore</h2>
+				<p>
+					When a new consultant signs up, I also create a document for them in Firestore's consultantUsers collection, 
+					using their UID as the document ID. At first, I used addDoc, but ran into issues since addDoc generates a 
+					random ID and the user in the auth section wasn't matching with the user in the database section. Switching to 
+					setDoc, which lets you define the document ID manually, fixed this. 
+				</p>
+                <pre><code class="language-tsx">
+					const userCredential = await createUserWithEmailAndPassword(auth, userData.email, userData.password);
+					const user = userCredential.user;
+
+					await setDoc(doc(db, "consultantUsers", user.uid), {
+					email: user.email,
+					students: [], // Placeholder for their student list
+					});
+				</code></pre>
+				<p>Now every consultant has both an Auth record (for login) and a Firestore record (for data).</p>
+				<h2>Logout with signOut()</h2>
+				<p>Logout is super simple, especially after handling sign in and sign up:</p>
+				<pre><code class="language-tsx">
+				    const auth = getAuth(app)
+					
+					// Handle user sign out
+					const handleSignOut = async () => {
+						try {
+							await signOut(auth)
+							console.log("User signed out successfully");
+						} catch (error) {
+							console.error("Error signing out: ", error);
+						}
+					}
+				</code></pre>
+				<p>
+					In the future, I'll add in proper notifications of when a user logs in and logs out, but for now I don't 
+					think that's completely necessary for an MVP.
+				</p>
+				<h2>The currentUser Problem</h2>
+				<p>
+					Once I had login and sign-up working, I wanted to display student data specific to the signed-in consultant. 
+					That means I need their UID to fetch their student records.
+					
+					Naturally, I did what the Firebase docs said:
+				</p>
+				<pre><code class="language-tsx">
+					useEffect(() = > {
+						const auth = getAuth();
+						const user = auth.currentUser
+
+						if (user) {
+							// fetch students
+						} else {
+							// user is null
+						}
+					}, [students])
+				</code></pre>
+				<p>
+					Unfortunately, currentUser kept being null, so I wasn't fetching my students.
+					
+					After reviewing the Firebase docs more, it turned out that this error is common when signing in. Here is what 
+					Firebase says:
+					
+					Note: currentUser might also be null because the auth object has not finished initializing. If you use an observer 
+					to keep track of the user's sign-in status, you don't need to handle this case.
+				</p>
+				<h2>The Fix: Using onAuthStateChanged</h2>
+				<p>To solve this, I used Firebase's onAuthStateChanged, which waits for the auth state to initialize before giving you the user.</p>
+				<pre><code class="language-tsx">
+					import { getAuth, onAuthStateChanged } from "firebase/auth";
+					import { useEffect, useState } from "react";
+
+					const [currentUser, setCurrentUser] = useState(null);
+
+					useEffect(() => {
+					const auth = getAuth();
+					const unsubscribe = onAuthStateChanged(auth, (user) => {
+						if (user) {
+						setCurrentUser(user); // Now I can use user.uid
+						}
+					});
+
+					return () => unsubscribe(); // Clean up listener
+					}, []);
+				</code></pre>
+				<p>Now I can use currentUser.uid to fetch consultant-specific student data without running into null errors or timing issues. 
+					Unfortunately, this initial render does have to be run on the client side since Firebase functions don't work on 
+					the server side.
+				</p>
+				<h2>What I Learned This Week</h2>
+				<p>
+					<ul>
+						<li>How to do quick auth setup with Firebase.</li>
+						<li>Read docs! My issue with auth.currentUser was right in the docs, and I could have wasted a lot of time 
+							if I wasn't reading it.</li>
+						<li>Saw that Auth and Firestore are separate, so to connect them, I need to do it manually myself. This was 
+							also mentioned in the Docs, although a bit indirectly.</li>
+					</ul>
+				</p>
+				<h2>Next Up: Fetching Student Data Per Consultant</h2>
+				<p>With the auth set, the next feature I'm working on is displaying the correct student cards on the dashboard, 
+					pulling only the students assigned to the logged-in consultant. I'll also start building out the students' profiles 
+					a bit too.
+
+					This means:
+					<ul>
+						<li>When creating a student, the consultant ID must be added in</li>
+						<li>Fetching student data tied to a consultant's UID</li>
+						<li>Brainstorming a layout for a student profile</li>
+					</ul>
+				</p>
+				<footer>
+					<!-- <ul class="stats">
+						<li><a href="#">General</a></li>
+						<li><a href="#" class="icon solid fa-heart">28</a></li>
+						<li><a href="#" class="icon solid fa-comment">128</a></li>
+					</ul> -->
+				</footer>
+			</article>
+
+		</div>
+
+		<!-- Footer -->
+		<section id="footer">
+			<ul class="icons">
+				<li><a href="https://www.linkedin.com/in/charles-cruse-2ba72ab6/"
+						class="icon brands fa-linkedin fa-lg"><span class="label">LinkedIn</span></a></li>
+				<li><a href="https://github.com/cruse-charles" class="icon brands fa-github fa-lg"><span
+							class="label">Github</span></a></li>
+				<li><a href="mailto:charlesncruse@gmail.com" class="icon solid fa-envelope fa-lg"><span
+							class="label">Email</span></a></li>
+			</ul>
+			<p class="copyright">&copy; Untitled. Design: <a href="http://html5up.net">HTML5 UP</a>.
+		</section>
+
+	</div>
+
+	<!-- Scripts -->
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/browser.min.js"></script>
+	<script src="assets/js/breakpoints.min.js"></script>
+	<script src="assets/js/util.js"></script>
+	<script src="assets/js/main.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-core.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/prismjs@1/plugins/autoloader/prism-autoloader.min.js"></script>
+
+</body>
+
+</html>
