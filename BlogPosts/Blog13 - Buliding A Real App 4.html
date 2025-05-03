@@ -1,0 +1,326 @@
+<!DOCTYPE HTML>
+<!--
+	Future Imperfect by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+
+<head>
+	<title>Single - Future Imperfect by HTML5 UP</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="stylesheet" href="../assets/css/main.css" />
+	<link href="https://cdn.jsdelivr.net/npm/prismjs@1/themes/prism-okaidia.css" rel="stylesheet" />
+</head>
+
+<body class="single is-preload">
+
+	<!-- Wrapper -->
+	<div id="wrapper">
+
+		<!-- Header -->
+		<header id="header">
+			<h1><a href="../index.html">Portfolio Site of Charles Cruse</a></h1>
+			<nav class="links">
+				<ul>
+					<li><a href="../aboutme.html">About Me</a></li>
+					<li><a href="../assets/Charles_Cruse_Resume.pdf">Resume</a></li>
+					<!-- <li><a href="#">Projects</a></li> -->
+				</ul>
+			</nav>
+			<!-- <nav class="main">
+                <ul>
+                    <li class="search">
+                        <a class="fa-search" href="#search">Search</a>
+                        <form id="search" method="get" action="#">
+                            <input type="text" name="query" placeholder="Search" />
+                        </form>
+                    </li>
+                    <li class="menu">
+                        <a class="fa-bars" href="#menu">Menu</a>
+                    </li>
+                </ul>
+            </nav> -->
+		</header>
+
+		<!-- Menu -->
+		<section id="menu">
+
+			<!-- Search -->
+			<!-- <section>
+				<form class="search" method="get" action="#">
+					<input type="text" name="query" placeholder="Search" />
+				</form>
+			</section> -->
+
+			<!-- Links -->
+			<!-- <section>
+				<ul class="links">
+					<li>
+						<a href="#">
+							<h3>Lorem ipsum</h3>
+							<p>Feugiat tempus veroeros dolor</p>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<h3>Dolor sit amet</h3>
+							<p>Sed vitae justo condimentum</p>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<h3>Feugiat veroeros</h3>
+							<p>Phasellus sed ultricies mi congue</p>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<h3>Etiam sed consequat</h3>
+							<p>Porta lectus amet ultricies</p>
+						</a>
+					</li>
+				</ul>
+			</section> -->
+
+			<!-- Actions -->
+			<!-- <section>
+				<ul class="actions stacked">
+					<li><a href="#" class="button large fit">Log In</a></li>
+				</ul>
+			</section> -->
+
+		</section>
+
+		<!-- Main -->
+		<div id="main">
+
+			<!-- Post -->
+			<article class="post">
+				<header>
+					<div class="title">
+						<h2><a href="#">Building A Real App #3</a></h2>
+						<p>Follow along with my journey to build a real app</p>
+					</div>
+					<div class="meta">
+						<time class="published" datetime="2025-05-01">May 1, 2025</time>
+						<!-- <a href="#" class="author"><span class="name">Jane Doe</span><img src="images/avatar.jpg"
+								alt="" /></a> -->
+					</div>
+				</header>
+				<span><img src="../images/BlogImages/Blog6/PhotoHeader.webp" alt="" /></span>
+				<h2>Creating Assignments For A Student</h2>
+				<p>
+					While building out the assignment creation, I ran into a couple of tricky issues. One was with 
+					handling select inputs in shadcn/ui, and another with browser behavior around file uploads.
+				</p>
+				<h2>Handling Select Inputs with shadcn/ui</h2>
+				<p>
+					Normally, I'm used to manipulating forms by passing the whole e (event) into a handler and 
+					reading e.target.value. However, shadcn's Select doesn't expose the event object in the same way. 
+					Instead, it gives you just the value of what was selected.
+				<br><br>
+					So, I had to rethink my handler function. Instead of the usual handleInputChange(e), I needed a 
+					function that accepts both a field name and the value selected:
+				<pre><code class="language-tsx">
+					const handleInputChange = (name: string, value: string) => {
+					setFormData((prevData) => ({
+						...prevData,
+						[name]: value,
+					}))
+					}
+				</code></pre>
+				<p>Then, for each Select, I manually pass in the field name. This change made my form state work across 
+					all my selects:</p>
+				<pre><code class="language-tsx">
+					&lt;Select value={formData.type} onValueChange={(value) =&gt; handleInputChange("type", value)} &gt;
+					&lt;SelectTrigger&gt;
+						&lt;SelectValue placeholder="Select type" /&gt;
+					&lt;/SelectTrigger&gt;
+					&lt;SelectContent&gt;
+						&lt;SelectItem value="essay"&gt;Essay&lt;/SelectItem&gt;
+						&lt;SelectItem value="application"&gt;Application&lt;/SelectItem&gt;
+						&lt;SelectItem value="document"&gt;Document&lt;/SelectItem&gt;
+						&lt;SelectItem value="portfolio"&gt;Portfolio&lt;/SelectItem&gt;
+					&lt;/SelectContent&gt;
+					&lt;/Select&gt;
+				</code></pre>
+				<h2>File Upload Bug: Re-Uploading the Same File</h2>
+				<p>
+					Another issue I hit was with file uploads. At first, I thought it was Firebase Storage misbehaving, 
+					but it turned out to be an issue with browser behavior.
+					Here's the problem:
+					<br><br>
+					<ol>
+						<li>I upload a file.</li>
+						<li>I delete that file from the list.</li>
+						<li>I try to upload the exact same file again.</li>
+					</ol>
+					The input-file tag doesn't trigger the onChange event, because the browser thinks nothing has changed. 
+					It believes that the same file name and size were selected.
+					The fix was simple once I learned this: after handling the upload, reset the input's value to an 
+					empty string. That way, the same file can be selected again.
+				</p>
+                <pre><code class="language-tsx">
+					const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+					const files = event?.target.files
+					if (!files) return
+
+					// ...upload logic...
+
+					// Reset so the same file can be re-selected
+					event.target.value = ""
+					}
+				</code></pre>
+				<h2>Looking Ahead</h2>
+				<p>
+					Right now, I'm using uploadBytes to send files to Firebase Storage, but I plan to switch to 
+					uploadBytesResumable so I can track progress for the user to see.
+					<br><br>
+					Between learning how to adapt form handling for shadcn's components and debugging browser quirks 
+					with file inputs, this part of the build forced me to dig deeper into React form patterns and how 
+					browser file inputs actually work under the hood.
+				</p>
+				<h2>Connecting Assignments to Students and Consultants: Folder Selection</h2>
+				<p>
+					When I started thinking of the data scheme for assignments, I needed each assignment to be tied to 
+					the consultant and student it belonged to. However, this also had to be organized in a way that 
+					was easy for a user to organize. That meant organizing assignments into folders and letting users 
+					either select an existing folder or create a new one on the fly.
+					<br><br>
+					At first, I thought this would be straightforward with a simple Select. But when I tried to support 
+					both existing folders and a new folder name via input, it got a bit more compmlex.
+				</p>
+				<h2>The First Attempt</h2>
+				<p>
+					My initial version only used a Select, thinking I could just add a "create-new" option and handle 
+					it inline:
+				</p>
+				<pre><code class="language-tsx">
+					&lt;Select 
+					value={formData.folderName} 
+					onValueChange={(value) =&gt; 
+						value === 'create-new' 
+						? setNewFolder(true) 
+						: handleInputChange("folderName", value)
+					}
+					&gt;
+					&lt;SelectTrigger&gt;
+						&lt;SelectValue placeholder="Select or create folder" /&gt;
+					&lt;/SelectTrigger&gt;
+					&lt;SelectContent&gt;
+						&lt;SelectItem value="create-new"&gt;+ Create New Folder&lt;/SelectItem&gt;
+					&lt;/SelectContent&gt;
+					&lt;/Select&gt;
+				</code></pre>
+				<p>
+					The issue here was:
+					•	Choosing “+ Create New Folder” didn't let me actually type the new folder name.
+					•	The Select component wasn't enough by itself. I needed an input field to dynamically appear 
+					when a new folder was being created.
+				</p>
+				<h2>The Corrected Approach</h2>
+				<p>The solution was to break the logic out into a proper component and track whether the user was 
+					creating a new folder with state (newFolder).</p>
+				<pre><code class="language-tsx">
+					&lt;Select 
+					value={newFolder ? "create-new" : formData.folderName} 
+					onValueChange={(value) =&gt; { 
+						if (value === 'create-new') { 
+						setNewFolder(true) 
+						handleInputChange("folderName", "") 
+						} else { 
+						setNewFolder(false) 
+						handleInputChange("folderName", value) 
+						} 
+					}} 
+					&gt; 
+					&lt;SelectTrigger&gt; 
+						&lt;SelectValue placeholder="Select or create folder" /&gt; 
+					&lt;/SelectTrigger&gt; 
+					&lt;SelectContent&gt; 
+						&lt;SelectItem value="create-new"&gt;+ Create New Folder&lt;/SelectItem&gt; 
+					&lt;/SelectContent&gt; 
+					&lt;/Select&gt;
+				</code></pre>
+				<p>Then, when newFolder is true, I conditionally render an Input where the user can type in the 
+					new folder's name:</p>
+				<pre><code class="language-tsx">
+					{ newFolder &amp;&amp; (
+					&lt;div className="space-y-2"&gt;
+						&lt;Label htmlFor="folder-name"&gt;New Folder Name&lt;/Label&gt;
+						&lt;Input
+						id="folder-name"
+						placeholder="Enter new folder name"
+						value={formData.folderName}
+						onChange={(e) =&gt; handleInputChange("folderName", e.target.value)}
+						/&gt;
+					&lt;/div&gt;
+					)}
+				</code></pre>
+				<h2>What I Learned</h2>
+				<p>
+					<ul>
+						<li>A Select component alone isn't always enough. When you need both selection and 
+							creation, you have to design for two states: choosing from existing options or entering 
+							something brand new.</li>
+						<li>Conditional rendering is your friend. By tracking newFolder with state, I was able to 
+							toggle between showing a simple select menu and revealing an input when needed.</li>
+						<li>File inputs behave differently than other inputs. Browsers don't trigger an onChange 
+							event if you select the same file twice in a row. To handle this, I had to manually reset 
+							the input's value (event.target.value = "") after each upload so users can re-upload the 
+							same file if needed.</li>
+					</ul>
+				</p>
+				<h2>What's Next</h2>
+				<p>
+					The folder selection logic is now working well, but one issue I'm running into is the number of 
+					props I have to pass around just to make it work. For example, formData, handleInputChange, newFolder, 
+					and setNewFolder are all getting drilled down through multiple components.
+					<br><br>
+					The next step will be to add Redux for global state management. With Redux, I'll be able to:
+					<ul>
+						<li>Store assignment form data in a centralized slice of state.</li>
+						<li>Avoid passing multiple props through each layer of components.</li>
+						<li>Make folder creation and assignment updates easier to track across the app.</li>
+					</ul>
+				</p>
+				<footer>
+					<!-- <ul class="stats">
+						<li><a href="#">General</a></li>
+						<li><a href="#" class="icon solid fa-heart">28</a></li>
+						<li><a href="#" class="icon solid fa-comment">128</a></li>
+					</ul> -->
+				</footer>
+			</article>
+
+		</div>
+
+		<!-- Footer -->
+		<section id="footer">
+			<ul class="icons">
+				<li><a href="https://www.linkedin.com/in/charles-cruse-2ba72ab6/"
+						class="icon brands fa-linkedin fa-lg"><span class="label">LinkedIn</span></a></li>
+				<li><a href="https://github.com/cruse-charles" class="icon brands fa-github fa-lg"><span
+							class="label">Github</span></a></li>
+				<li><a href="mailto:charlesncruse@gmail.com" class="icon solid fa-envelope fa-lg"><span
+							class="label">Email</span></a></li>
+			</ul>
+			<p class="copyright">&copy; Untitled. Design: <a href="http://html5up.net">HTML5 UP</a>.
+		</section>
+
+	</div>
+
+	<!-- Scripts -->
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/browser.min.js"></script>
+	<script src="assets/js/breakpoints.min.js"></script>
+	<script src="assets/js/util.js"></script>
+	<script src="assets/js/main.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-core.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/prismjs@1/plugins/autoloader/prism-autoloader.min.js"></script>
+
+</body>
+
+</html>
