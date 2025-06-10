@@ -1,0 +1,434 @@
+<!DOCTYPE HTML>
+<!--
+	Future Imperfect by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+
+<head>
+	<title>Single - Future Imperfect by HTML5 UP</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="stylesheet" href="../assets/css/main.css" />
+	<link href="https://cdn.jsdelivr.net/npm/prismjs@1/themes/prism-okaidia.css" rel="stylesheet" />
+</head>
+
+<body class="single is-preload">
+
+	<!-- Wrapper -->
+	<div id="wrapper">
+
+		<!-- Header -->
+		<header id="header">
+			<h1><a href="../index.html">Portfolio Site of Charles Cruse</a></h1>
+			<nav class="links">
+				<ul>
+					<li><a href="../aboutme.html">About Me</a></li>
+					<li><a href="../assets/Charles_Cruse_Resume.pdf">Resume</a></li>
+					<!-- <li><a href="#">Projects</a></li> -->
+				</ul>
+			</nav>
+			<!-- <nav class="main">
+                <ul>
+                    <li class="search">
+                        <a class="fa-search" href="#search">Search</a>
+                        <form id="search" method="get" action="#">
+                            <input type="text" name="query" placeholder="Search" />
+                        </form>
+                    </li>
+                    <li class="menu">
+                        <a class="fa-bars" href="#menu">Menu</a>
+                    </li>
+                </ul>
+            </nav> -->
+		</header>
+
+		<!-- Menu -->
+		<section id="menu">
+
+			<!-- Search -->
+			<!-- <section>
+				<form class="search" method="get" action="#">
+					<input type="text" name="query" placeholder="Search" />
+				</form>
+			</section> -->
+
+			<!-- Links -->
+			<!-- <section>
+				<ul class="links">
+					<li>
+						<a href="#">
+							<h3>Lorem ipsum</h3>
+							<p>Feugiat tempus veroeros dolor</p>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<h3>Dolor sit amet</h3>
+							<p>Sed vitae justo condimentum</p>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<h3>Feugiat veroeros</h3>
+							<p>Phasellus sed ultricies mi congue</p>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<h3>Etiam sed consequat</h3>
+							<p>Porta lectus amet ultricies</p>
+						</a>
+					</li>
+				</ul>
+			</section> -->
+
+			<!-- Actions -->
+			<!-- <section>
+				<ul class="actions stacked">
+					<li><a href="#" class="button large fit">Log In</a></li>
+				</ul>
+			</section> -->
+
+		</section>
+
+		<!-- Main -->
+		<div id="main">
+
+			<!-- Post -->
+			<article class="post">
+				<header>
+					<div class="title">
+						<h2><a href="#">Building A Real App #7</a></h2>
+						<p>Follow along with my journey to build a real app</p>
+					</div>
+					<div class="meta">
+						<time class="published" datetime="2025-06-07">June 7, 2025</time>
+						<!-- <a href="#" class="author"><span class="name">Jane Doe</span><img src="images/avatar.jpg"
+								alt="" /></a> -->
+					</div>
+				</header>
+				<span><img src="../images/BlogImages/Blog6/PhotoHeader.webp" alt="" /></span>
+				<h2>File uploads using Firebase</h2>
+				<p>
+					One of the most important parts of the platform will be the sharing of assignments
+					 between the consultant and student, specifically the files sent to each other. 
+
+					<br></br>
+					The workflow I imagine lets a consultant create tasks for a student, attach files, 
+					track updates through a timeline, and keep the student's dashboard updated with 
+					their next deadline and the number of pending tasks. 
+
+					<br></br>
+					The workflow ends up touching almost every layer of the project: Firebase Storage, 
+					Firestore, React state, and Redux.  
+				</p>
+				<h2>Uploading files to Firebase Storage</h2>
+				<p>
+					I utility function that can accept multiple files, upload them to Firebase Storage, 
+					and give me back all the metadata I'd need later in the assignment timeline.
+	
+					<br></br>
+	
+					Here's the function I built:
+	
+					<br></br>
+	
+					<pre><code class="language-tsx">
+						export const fileUpload = async (files: File[], studentId: string) => {
+							const filesData = []
+
+							for (const file of Array.from(files) as File[]) {
+								const uniqueName = `${Date.now()}-${file.name}`;        
+								const storagePath = `assignments/${studentId}/${uniqueName}`
+								const storageRef = ref(storage, storagePath);
+
+								try {
+									const snapshot = await uploadBytes(storageRef, file)
+									const downloadUrl = await getDownloadURL(storageRef)
+
+									filesData.push({
+										storagePath,
+										downloadUrl,
+										originalName: file.name,
+										uploadedAt: new Date(),
+									})
+								} catch (error) {
+									console.error('Error uploading file:', error);
+								}
+							}
+
+							return filesData
+						}
+					</code></pre>
+
+					This function loops through every file, generates a unique name, uploads it, and 
+					returns structured metadata. The metadata later becomes part of the assignment's 
+					timeline entries, so every upload is tracked with a timestamp and original filename, 
+					especially since a consultant could have hundreds of files shared back and forth, so I 
+					definitely need filenames to be original to prevent overlap. 
+				</p>
+				<h2>Creating an assignment in Firestore</h2>
+				<p>
+					Once uploads were handled, I built uploadAssignment, the function responsible 
+					for creating a new assignment document in Firestore. This function also establishes 
+					the relationship between the assignment, the student, and the consultant who created 
+					it.
+
+					<br></br>
+					
+					<pre><code class="language-tsx">
+						export const uploadAssignment = async (assignmentData: AssignmentUpload, studentId: string, userId: string) => {
+							try {
+								const assignmentDocId = nanoid()
+								const assignmentDocRef = doc(db, "assignments", assignmentDocId)
+
+								await setDoc(assignmentDocRef, {
+									...assignmentData,
+									consultant: doc(db, "consultantUsers", userId)
+								})
+
+								await updateNextDeadline(studentId, assignmentData.dueDate)
+
+								await updateDoc(doc(db, "studentUsers", studentId), {
+									assignmentDocIds: arrayUnion(assignmentDocId),
+									folders: arrayUnion(assignmentData.folder)
+								})
+
+								return assignmentDocId
+							} catch (error) {
+								console.log("Error adding assignment: ", error)
+							}
+						}
+					</code></pre>
+					
+					Besides writing the assignment itself, this function also updates the student's 
+					list of assignment IDs and folders. I'm also trying to keep data lean, and not 
+					sure if I should opt into using a reference to the student/consultant or a string 
+					of their ID. 
+
+					<br></br>
+
+					But the most significant part here is the automatic call to updateNextDeadline, 
+					which brings us to the next major feature.
+
+				</p>
+				<h2>Automatically recalculating stats: next deadline and pending count</h2>
+				<p>
+					I wanted the student dashboard to feel dynamic. When a new assignment is added, 
+					the student should immediately see an updated “Next Deadline” and an updated count 
+					of pending assignments—without needing expensive queries or client-side filtering.
+
+					<br></br>
+					To make this work, I wrote a utility that compares the currently stored next 
+					deadline with the incoming assignment's due date.
+
+					<pre><code class="language-tsx">
+						export const updateNextDeadline = async (studentId: string, dueDate: Date | Timestamp | undefined) => {
+							if (!dueDate) return
+
+							const dueDateTs = dueDate instanceof Timestamp ? dueDate : Timestamp.fromDate(dueDate);
+
+							const studentDocRef = doc(db, "studentUsers", studentId);
+							const studentDocSnap = await getDoc(studentDocRef);
+							const studentData = studentDocSnap.data();
+
+							const nextDeadlineRaw = studentData?.stats?.nextDeadline;
+							const nextDeadline = nextDeadlineRaw
+								? new Timestamp(nextDeadlineRaw.seconds, nextDeadlineRaw.nanoseconds)
+								: null;
+
+							const now = Timestamp.fromDate(new Date());
+
+							if (!nextDeadline ||
+								(nextDeadline.seconds < now.seconds && dueDateTs.seconds >= now.seconds) ||
+								(dueDateTs.seconds >= now.seconds && dueDateTs.seconds < nextDeadline.seconds)
+							) {
+								await updateDoc(studentDocRef, { "stats.nextDeadline": dueDateTs });
+							}
+						};
+					</code></pre>
+				</p>
+				<p>
+					This function looks at the current deadline and compares timestamps to determine 
+					whether the new assignment is due sooner. It also handles the case where a stored 
+					next deadline has already passed, which took a lot of testing to understand the 
+					error I was getting and get this logic right. A big issue was that Firestore 
+					Timestamps can behave differently from regular JavaScript Dates.
+				</p>
+				<h2>Building a Collapsible Folder System for Student Assignments</h2>
+				<p>
+					Next, I worked on the interface for viewing assignments. Obviously, I didn't 
+					want users to just scroll through a massive list of assignments. The plan is 
+					for users to group assignments into folders and let them toggle them open and closed.
+				</p>
+				<h2>Bringng everything together in the CreateAssignmentModal</h2>
+				<p>
+
+					The UI for creating assignments lives inside CreateAssignmentModal, and this 
+					component is responsible for orchestrating the entire flow—from validation, to 
+					file uploads, to Firestore writes, to Redux updates.
+
+					<br></br>
+					Here's what the submission handler looks like:
+
+
+					<pre><code class="language-tsx">
+						const handleSubmit = async (e) => {
+							e.preventDefault()
+							setIsLoading(true)
+
+							const isValid = validateForm();
+							if (!isValid) return setIsLoading(false);
+
+							const dueDateAt1159pm = new Date(dueDate);
+							dueDateAt1159pm.setHours(23, 59, 0, 0); 
+
+							const assignmentData = {
+								title: formData.title,
+								type: formData.type,
+								priority: formData.priority,
+								dueDate: Timestamp.fromDate(dueDateAt1159pm),
+								note: formData.note,
+								createdAt: Timestamp.fromDate(new Date()),
+								student: studentId,
+								folder: formData.folder,
+								status: formData.status,
+								timeline: [{
+									files: [],
+									type: 'Assignment Created',
+									uploadedAt: Timestamp.fromDate(new Date()),
+									uploadedBy: `${user.firstName} ${user.lastName}`,
+									note: 'Assignment created and assigned to student.'
+								}]
+							}
+
+							const filesData = await fileUpload(files, studentId)
+							assignmentData.timeline[0].files = filesData
+
+							const assignmentDocId = await uploadAssignment(assignmentData, studentId, user.id)
+
+							dispatch(addAssignment({ id: assignmentDocId, ...assignmentData }))
+							dispatch(updateFolders(formData.folder))
+							dispatch(updateAssignmentDocIds(assignmentDocId))
+
+							updatePendingCount(studentId, 'Pending')
+
+							resetForm()
+							setOpen(false)
+							setIsLoading(false)
+						}
+					</code></pre>
+
+
+This sequence represents the entire lifecycle of assignment creation:
+
+
+					<ol>
+						<li>
+							Validate the form
+						</li>
+						<li>
+							Normalize the due date time
+						</li>
+						<li>
+							Build the initial timeline entry
+						</li>
+						<li>
+							Upload all attached files
+						</li>
+						<li>
+							Insert the assignment into Firestore
+						</li>
+						<li>
+							Update student stats
+						</li>
+						<li>
+							Update Redux so the UI reflects the new assignment instantly
+						</li>
+						<li>
+							Reset the modal
+						</li>
+					</ol>
+
+					Getting this order right mattered a lot. Redux updates must happen after the 
+					Firestore write, because the reducer expects a real ID. The timeline also needs 
+					to be created before the file upload so there's an entry to attach the file 
+					metadata to. This careful sequencing is what keeps the UI consistent and prevents 
+					phantom assignments or broken references.
+				</p>
+				<h2>What I Learned</h2>
+				<p>
+					<ul>
+						<li>
+							Firebase storage, Firestore references, timestamps were a big learning curve
+						</li>
+						<li>
+							Normalize your data early. Between 3 different times formats, it was 
+							confusing to work with them all
+						</li>
+						<li>
+							Developing metadata with files to capture max data
+						</li>
+						<li>
+							Small utilities go a long way, break down your functions
+						</li>
+					</ul>
+
+					<h3>Firebase & Auth</h3>
+					<ul>
+							Data fetching must wait for onAuthStateChanged before dispatching thunks.						</li>
+					</ul>
+				</p>
+				<h2>What's Next</h2>
+				<p>
+					I need to get some more core functionality with my app done. So I'll be focusing on the 
+					updating part of CRUD for assignments.
+					<ul>
+						<li>
+							Work on file uploads
+						</li>
+						<li>
+							Get the Create and Update of CRUD for assignments and entries for the timeline
+						</li>
+					</ul>
+				</p>
+				<footer>
+					<!-- <ul class="stats">
+						<li><a href="#">General</a></li>
+						<li><a href="#" class="icon solid fa-heart">28</a></li>
+						<li><a href="#" class="icon solid fa-comment">128</a></li>
+					</ul> -->
+				</footer>
+			</article>
+
+		</div>
+
+		<!-- Footer -->
+		<section id="footer">
+			<ul class="icons">
+				<li><a href="https://www.linkedin.com/in/charles-cruse-2ba72ab6/"
+						class="icon brands fa-linkedin fa-lg"><span class="label">LinkedIn</span></a></li>
+				<li><a href="https://github.com/cruse-charles" class="icon brands fa-github fa-lg"><span
+							class="label">Github</span></a></li>
+				<li><a href="mailto:charlesncruse@gmail.com" class="icon solid fa-envelope fa-lg"><span
+							class="label">Email</span></a></li>
+			</ul>
+			<p class="copyright">&copy; Untitled. Design: <a href="http://html5up.net">HTML5 UP</a>.
+		</section>
+
+	</div>
+
+	<!-- Scripts -->
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/browser.min.js"></script>
+	<script src="assets/js/breakpoints.min.js"></script>
+	<script src="assets/js/util.js"></script>
+	<script src="assets/js/main.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-core.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/prismjs@1/plugins/autoloader/prism-autoloader.min.js"></script>
+
+</body>
+
+</html>
