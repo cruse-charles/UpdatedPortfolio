@@ -1,0 +1,478 @@
+<!DOCTYPE HTML>
+<!--
+	Future Imperfect by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+
+<head>
+	<title>Single - Future Imperfect by HTML5 UP</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="stylesheet" href="../assets/css/main.css" />
+	<link href="https://cdn.jsdelivr.net/npm/prismjs@1/themes/prism-okaidia.css" rel="stylesheet" />
+</head>
+
+<body class="single is-preload">
+
+	<!-- Wrapper -->
+	<div id="wrapper">
+
+		<!-- Header -->
+		<header id="header">
+			<h1><a href="../index.html">Portfolio Site of Charles Cruse</a></h1>
+			<nav class="links">
+				<ul>
+					<li><a href="../aboutme.html">About Me</a></li>
+					<li><a href="../assets/Charles_Cruse_Resume.pdf">Resume</a></li>
+					<!-- <li><a href="#">Projects</a></li> -->
+				</ul>
+			</nav>
+			<!-- <nav class="main">
+                <ul>
+                    <li class="search">
+                        <a class="fa-search" href="#search">Search</a>
+                        <form id="search" method="get" action="#">
+                            <input type="text" name="query" placeholder="Search" />
+                        </form>
+                    </li>
+                    <li class="menu">
+                        <a class="fa-bars" href="#menu">Menu</a>
+                    </li>
+                </ul>
+            </nav> -->
+		</header>
+
+		<!-- Menu -->
+		<section id="menu">
+
+			<!-- Search -->
+			<!-- <section>
+				<form class="search" method="get" action="#">
+					<input type="text" name="query" placeholder="Search" />
+				</form>
+			</section> -->
+
+			<!-- Links -->
+			<!-- <section>
+				<ul class="links">
+					<li>
+						<a href="#">
+							<h3>Lorem ipsum</h3>
+							<p>Feugiat tempus veroeros dolor</p>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<h3>Dolor sit amet</h3>
+							<p>Sed vitae justo condimentum</p>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<h3>Feugiat veroeros</h3>
+							<p>Phasellus sed ultricies mi congue</p>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<h3>Etiam sed consequat</h3>
+							<p>Porta lectus amet ultricies</p>
+						</a>
+					</li>
+				</ul>
+			</section> -->
+
+			<!-- Actions -->
+			<!-- <section>
+				<ul class="actions stacked">
+					<li><a href="#" class="button large fit">Log In</a></li>
+				</ul>
+			</section> -->
+
+		</section>
+
+		<!-- Main -->
+		<div id="main">
+
+			<!-- Post -->
+			<article class="post">
+				<header>
+					<div class="title">
+						<h2><a href="#">Building A Real App #8</a></h2>
+						<p>Follow along with my journey to build a real app</p>
+					</div>
+					<div class="meta">
+						<time class="published" datetime="2025-06-19">June 19, 2025</time>
+						<!-- <a href="#" class="author"><span class="name">Jane Doe</span><img src="images/avatar.jpg"
+								alt="" /></a> -->
+					</div>
+				</header>
+				<span><img src="../images/BlogImages/Blog6/PhotoHeader.webp" alt="" /></span>
+				<h2>Testing Users, Finding Bugs, and Rebuilding the Architecture of My App</h2>
+				<p>
+					After getting my first set of test users into the app this week, I realized very 
+					quickly that building features is one thing—but watching someone else actually 
+					try to use them is something entirely different. Some of the issues they ran into 
+					were small, some were embarrassingly big, and some were things I never would've 
+					caught on my own. 
+
+					<br></br>
+					But honestly, this testing round has completely reshaped the direction of my app. 
+					Here's what actually happened. 
+				</p>
+				<h2>Test Users</h2>
+				<p>
+					I figured I'd have to fix bugs, but there were other things that I hadn't even 
+					quite thought about that needed fixing too. For example, there was the assignment 
+					creation form.
+	
+					<br></br>
+	
+					I used terminology like “pending” to mean “waiting for a student to complete the 
+					task,” but users interpreted it as “the assignment itself is pending upload”. 
+					Totally different meaning. UI language is way more important than I gave it credit 
+					for.
+				</p>
+				<h2>The Reality Check: People Need Onboarding, Not Guesswork</h2>
+				<p>
+					My initial plan with the users was to put them in front of the app, give no advice, 
+					and just watch them play around with the app. What actually happened was: they 
+					logged in, landed on the dashboard, stared at it… and didn't click anything.
+					<br></br>
+					They didn't know what to do. They didn't know where to start. They didn't even 
+					realize they had to create their first student before seeing assignments, despite 
+					what I thought were large enough buttons saying “Add Student” on the screen and 
+					me informing them this was an app to manage students. So onboarding widgets are 
+					now officially on the roadmap.
+					
+					<br></br>
+					I'm building guided prompts to:
+					<ul>
+						<li>
+							Walk consultants through creating their first student
+						</li>
+						<li>
+							Help them input their first assignment
+						</li>
+						<li>
+							Nudge them to explore other features instead of assuming they'll notice 
+							them
+						</li>
+					</ul>
+
+					To support this, I need to tweak my database schema to detect a user's first-time 
+					sign-in. Not a huge change but it's just more that needs to be added to a user's 
+					meta data, and I'm beginning to see that user info with enterprises might be much 
+					larger than I expected.
+					
+				</p>
+				<h2>Adding Loading States and Toast Notifications</h2>
+				<p>
+					The testers also pointed out the obvious: every submission needs feedback. 
+
+					<ul>
+						<li>
+							A loading state prevents duplicate clicks.
+						</li>
+						<li>
+							A toast confirms whether the action actually succeeded.
+						</li>
+						<li>
+							A disabled button avoids triggering a half-loaded API call.
+						</li>
+					</ul>
+
+					I was either doing just one or none of these things for my user actions, so I made 
+					sure to sweep the whole app and add in feedback wherever I could.
+
+					<br></br>
+					I added proper toasts for student creation, assignment creation, and submission 
+					actions, as well as loading skeletons where full data hasn't populated yet. And 
+					these skeletons uncovered another issue: users could click assignments before 
+					the full data was even fetched, which caused modal crashes. Skeletons now mask 
+					that window where things are half-loaded.
+				</p>
+				<h2>Building a Calendar Component</h2>
+				<p>
+					The next feature I worked on was a calendar/agenda system for both consultants and 
+					students. The UI itself was an interesting challenge, especially the grid-based 
+					month view.
+					
+					<br></br>
+					
+					But halfway into testing it, I thought that an issue might come up with data 
+					volume. I currently have no idea how much data is sent over to people that 
+					make requests on most apps, like banking or social media. When is too much, when  
+					is it slowing down the fetch or slowing down the user's computer?
+					
+					 <br></br>
+					
+					A single consultant may have hundreds of assignments across dozens of students. Each 
+					assignment contains nested timeline objects too. Right now, I'm fetching everything 
+					at once and filtering client-side, which I think is fine for now, but I'm not sure 
+					if it will scale.
+					
+					<br></br>
+					My future plan is:
+					<ul>
+						<li>
+							fetch only this week for the agenda
+						</li>
+						<li>
+							fetch this month + next month for the calendar
+						</li>
+						<li>
+							lazy-load older months
+						</li>
+						<li>
+							potentially pre-index dates server-side
+						</li>
+					</ul>
+
+					Here's a lite version of the calendar code from the testing phase, for context:
+					<pre><code class="language-tsx">
+						const page = () =&gt; {
+    
+						// Fetch user's assignments 
+						useEffect(() =&gt; {
+							const fetchAssignments = async () =&gt; {
+								const assignmentData = user.role === 'consultant' 
+									? await getConsultantAssignments(user.id) 
+									: await getStudentAssignments(user.id)
+
+								setAssignments(assignmentData)
+							}
+						
+							fetchAssignments()
+						}, [user.id])
+
+
+						for (let i = 0; i &lt; 35; i++) {
+						days.push(new Date(current))
+						current.setDate(current.getDate() + 1)
+						}
+
+						// Function to navigate between months
+						const navigateMonth = (direction: "prev" | "next") =&gt; {
+							setCurrentDate((prev) =&gt; {
+								const newDate = new Date(prev)
+								if (direction === "prev") {
+									newDate.setMonth(prev.getMonth() - 1)
+								} else {
+									newDate.setMonth(prev.getMonth() + 1)
+								}
+								return newDate
+							})
+						}
+
+
+						return (
+							&lt;&gt;
+							&lt;div className="flex items-center justify-between"&gt;
+							&lt;div className="flex items-center space-x-2"&gt;
+								&lt;Button variant="outline" size="icon" onClick={() =&gt; navigateMonth("prev")}&gt;
+								&lt;ChevronLeft className="h-4 w-4" /&gt;
+								&lt;/Button&gt;
+								&lt;Button variant="outline" size="icon" onClick={() =&gt; navigateMonth("next")}&gt;
+								&lt;ChevronRight className="h-4 w-4" /&gt;
+								&lt;/Button&gt;
+							&lt;/div&gt;
+							&lt;/div&gt;
+
+							&lt;div className="grid grid-cols-7 gap-1"&gt;
+								{["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) =&gt; (
+									&lt;div 
+										key={day} 
+										className="p-2 text-center text-sm font-medium text-muted-foreground"
+									&gt;
+										{day}
+									&lt;/div&gt;
+								))}
+
+								{days.map((day, index) =&gt; {
+									const isCurrentMonth = day.getMonth() === month
+									const isToday = day.toDateString() === new Date().toDateString()
+									
+									return (
+										&lt;div
+											key={index}
+											className={`h-40 p-1 border hover:bg-muted/50 ${
+												!isCurrentMonth ? "text-muted-foreground bg-muted/20" : ""
+											} ${isToday ? "bg-primary/10 border-primary" : ""}`}
+										&gt;
+											&lt;div className="text-sm font-medium mb-1"&gt;
+												{day.getDate()}
+											&lt;/div&gt;
+											&lt;ScrollArea&gt;
+												{assignments
+													.filter(assignment =&gt; (
+														formatNextDeadline(day) === 
+														formatNextDeadline(assignment.dueDate)
+													))
+													.map((assignment) =&gt; (
+														&lt;div className="text-xs font-medium truncate"&gt;
+															{assignment.title}
+														&lt;/div&gt;
+													))
+												}
+											&lt;/ScrollArea&gt;
+										&lt;/div&gt;
+									)
+								})}
+							&lt;/div&gt;
+							&lt;/&gt;
+						)
+					}
+
+					export default page
+
+					</code></pre>
+
+				</p>
+				<h2>Hitting a Wall With Shared Components</h2>
+				<p>
+
+					As I kept adding calendar views, assignment lists, student dashboard components, 
+					and all the modals, I hit another pain point: file naming and folder organization.
+
+					<br></br>
+					When a single component needed to work for both students and consultants, names 
+					became annoying to read: ConsultantViewStudentProfile, StudentViewStudentProfile, 
+					ConsultantAssignmentListDashboard
+
+					<br></br>
+					These “reusable components” actually weren't THAT reusable either. Each role needed 
+					slight differences which turned these shared components into a conditional mess. So, 
+					I Split the app into two separate route trees. /consultant/... and /student/...
+
+					<br></br>
+					I'm not quite certain if this is best practice, since I know it doubles some code, 
+					but each component is so much easier to find now and more manageable individually 
+					speaking. It's also easier to stop users from going to the wrong routes.
+
+				</p>
+				<h2>Implementing Middleware + Cookies for the First Time</h2>
+				<p>
+					Next.js middleware doesn't have access to Redux, so I had to store the user's role 
+					in a cookie via an API route so I can correctly direct them or manage what they 
+					see when they login:
+
+					<pre><code class="language-tsx">
+						middleware.tsimport { NextResponse } from "next/server";
+
+						// POST /api/set-session
+						export async function POST(req: Request) {
+						const { role } = await req.json();
+
+						const res = NextResponse.json({ success: true });
+						
+						// Set cookie for role (1 day expiration for example)
+						res.cookies.set("role", role, {
+							httpOnly: true, // prevents JS access
+							secure: process.env.NODE_ENV === "production",
+							sameSite: "strict",
+							path: "/",
+							maxAge: 60 * 60 * 24, // 1 day
+						});
+
+						return res;
+						}
+					</code></pre>
+
+					I considered using js-cookie, but middleware can’t trust browser-side cookies for secure routing—it needs httpOnly cookies, which JavaScript can’t access. So the API route ended up being the right approach.
+				</p>
+				<h2>Firebase: getDoc or a Query?</h2>
+				<p>
+					I also found myself asking whether I should be using getDoc() or a query for fetching assignments, and found that queries are better in most cases.
+					<ul>
+						<li>
+							They match how the data is structured
+						</li>
+						<li>
+							They allow filtering by due date, student, consultant, status, etc.
+						</li>
+						<li>
+							They scale better
+						</li>
+						<li>
+							They avoid over-fetching entire documents that might not be needed
+						</li>
+
+					</ul>
+				</p>
+				<h2>Lessons Learned</h2>
+				<p>
+					<ul>
+						<li>
+							Users don't act how you expect. Hold their hand when introducing them to 
+							your app.
+						</li>
+						<li>
+							Loading states and toasts aren't optional. They're required. Without them, 
+							they will confuse users.
+						</li>
+						<li>
+							Remain flexible with how you structure things. Even if it's maybe not 
+							industry standard, the way my app works, the way I have the files is for 
+							the best.
+						</li>
+						<li>
+							Middleware requires server-side cookies, not Redux. Client cookies aren't 
+							secure enough.
+						</li>
+					</ul>
+				</p>
+				<h2>What's Next</h2>
+				<p>
+					<ul>
+						<li>
+							Moving around my state from local to redux
+						</li>
+						<li>
+							Sorting function for assignments and folders
+						</li>
+						<li>
+							Allow for the deleting of data
+						</li>
+					</ul>
+				</p>
+				<footer>
+					<!-- <ul class="stats">
+						<li><a href="#">General</a></li>
+						<li><a href="#" class="icon solid fa-heart">28</a></li>
+						<li><a href="#" class="icon solid fa-comment">128</a></li>
+					</ul> -->
+				</footer>
+			</article>
+
+		</div>
+
+		<!-- Footer -->
+		<section id="footer">
+			<ul class="icons">
+				<li><a href="https://www.linkedin.com/in/charles-cruse-2ba72ab6/"
+						class="icon brands fa-linkedin fa-lg"><span class="label">LinkedIn</span></a></li>
+				<li><a href="https://github.com/cruse-charles" class="icon brands fa-github fa-lg"><span
+							class="label">Github</span></a></li>
+				<li><a href="mailto:charlesncruse@gmail.com" class="icon solid fa-envelope fa-lg"><span
+							class="label">Email</span></a></li>
+			</ul>
+			<p class="copyright">&copy; Untitled. Design: <a href="http://html5up.net">HTML5 UP</a>.
+		</section>
+
+	</div>
+
+	<!-- Scripts -->
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/browser.min.js"></script>
+	<script src="assets/js/breakpoints.min.js"></script>
+	<script src="assets/js/util.js"></script>
+	<script src="assets/js/main.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-core.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/prismjs@1/plugins/autoloader/prism-autoloader.min.js"></script>
+
+</body>
+
+</html>
