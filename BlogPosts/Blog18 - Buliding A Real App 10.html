@@ -112,7 +112,7 @@
 				<span><img src="../images/BlogImages/Blog6/PhotoHeader.webp" alt="" /></span>
 				<h2>My First Steps to Making My App Professional and User-Friendly</h2>
 				<p>
-					I’ve added two pieces of functionality that I think begin to take my project out of a personal project into something that users will need:
+					I've added two pieces of functionality that I think begin to take my project out of a personal project into something that users will need:
 				
 					<ol>
 						<li>
@@ -147,7 +147,7 @@
 
 					</code></pre>
 
-					However, while testing out my app and its functionality, I noticed that I was able to delete a batch of items and interrupt this batch, leaving me with some deleted items and some items not yet deleted. I don’t think this is really how it should be done on professional apps, so I researched what I could do and found writeBatch.
+					However, while testing out my app and its functionality, I noticed that I was able to delete a batch of items and interrupt this batch, leaving me with some deleted items and some items not yet deleted. I don't think this is really how it should be done on professional apps, so I researched what I could do and found writeBatch.
 				
 					<pre><code class="language-tsx">
 						const batch = writeBatch(db)
@@ -205,8 +205,8 @@
 						</li>
 					</ul>
 					
-					You must already know what you intend to update. In my case, that’s fine because: I already queried the assignments beforehand, I know which IDs need to be removed, and I know the folder name being deleted
-					But if I needed to check something dynamically during the write phase, writeBatch wouldn’t be enough.
+					You must already know what you intend to update. In my case, that's fine because: I already queried the assignments beforehand, I know which IDs need to be removed, and I know the folder name being deleted
+					But if I needed to check something dynamically during the write phase, writeBatch wouldn't be enough.
 
 				</p>
 
@@ -235,12 +235,12 @@
 						</li>
 					</ol>
 
-					This makes transactions ideal when you need the latest document state or Multiple users may modify the same document. This could be something I use in the future as I possibly include multiple consultants to see a single student’s account or allow for different levels of consultants, but for now I’ll stick with writeBatch.				
+					This makes transactions ideal when you need the latest document state or Multiple users may modify the same document. This could be something I use in the future as I possibly include multiple consultants to see a single student's account or allow for different levels of consultants, but for now I'll stick with writeBatch.				
 				</p>
 				
 				<h2>Building a Tooltip System (And Learning About the DOM)</h2>
 				<p>
-					The second big learning moment was building an onboarding tooltip system. Here’s my Tooltip component:
+					The second big learning moment was building an onboarding tooltip system. Here's my Tooltip component:
 
 					<pre><code class="language-tsx">
 						const Tooltip = ({ targetElement, content }) =&gt; {
@@ -272,15 +272,15 @@
 						}
 					</code></pre>
 
-					getBoundingClientRect() is a built-in DOM method available on any HTML element. It returns a DOMRect object. It returns the element’s position and size relative to the viewport. It gives you: top, bottom, left, right, width, height.
+					getBoundingClientRect() is a built-in DOM method available on any HTML element. It returns a DOMRect object. It returns the element's position and size relative to the viewport. It gives you: top, bottom, left, right, width, height.
 					
 					<br></br>
 
-					So when I position the tooltip with top: rect.bottom + 10, I’m saying: Place this tooltip 10px below the target element.
+					So when I position the tooltip with top: rect.bottom + 10, I'm saying: Place this tooltip 10px below the target element.
 
 					<br></br>
 
-					With getBoundingClientRect(), I have a reliable way to dynamically position an overlay relative to an arbitrary DOM element. I don’t have to worry about elements having been created already, or a user could be scrolling, or the position of parent elements.
+					With getBoundingClientRect(), I have a reliable way to dynamically position an overlay relative to an arbitrary DOM element. I don't have to worry about elements having been created already, or a user could be scrolling, or the position of parent elements.
 				</p>
 
 				<h2>Introducing the OnboardingManager</h2>
@@ -289,10 +289,10 @@
 					
 					<ul>
 						<li>
-							Which step we’re on
+							Which step we're on
 						</li>
 						<li>
-							Which page we’re on
+							Which page we're on
 						</li>
 						<li>
 							Whether onboarding is complete
@@ -302,7 +302,7 @@
 						</li>
 					</ul>
 
-					Dynamic Elements were an issue as I was building this out. Initially, I tried using querySelector, but if the element didn’t exist yet (like when creating assignments dynamically), querySelector returned null. And React rendered nothing, permanently. I added a setInterval to continuously search for the correct selector but I felt this wasn’t really the correct approach to just constantly search for an element.
+					Dynamic Elements were an issue as I was building this out. Initially, I tried using querySelector, but if the element didn't exist yet (like when creating assignments dynamically), querySelector returned null. And React rendered nothing, permanently. I added a setInterval to continuously search for the correct selector but I felt this wasn't really the correct approach to just constantly search for an element.
 				</p>
 
 				<h2>The Better Solution: MutationObserver</h2>
