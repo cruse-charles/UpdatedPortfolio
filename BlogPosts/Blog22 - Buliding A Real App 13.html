@@ -1,0 +1,468 @@
+<!DOCTYPE HTML>
+<!--
+	Future Imperfect by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+
+<head>
+	<title>Single - Future Imperfect by HTML5 UP</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="stylesheet" href="../assets/css/main.css" />
+	<link href="https://cdn.jsdelivr.net/npm/prismjs@1/themes/prism-okaidia.css" rel="stylesheet" />
+</head>
+
+<body class="single is-preload">
+
+	<!-- Wrapper -->
+	<div id="wrapper">
+
+		<!-- Header -->
+		<header id="header">
+			<h1><a href="../index.html">Portfolio Site of Charles Cruse</a></h1>
+			<nav class="links">
+				<ul>
+					<li><a href="../aboutme.html">About Me</a></li>
+					<li><a href="../assets/Charles_Cruse_Resume.pdf">Resume</a></li>
+					<!-- <li><a href="#">Projects</a></li> -->
+				</ul>
+			</nav>
+			<!-- <nav class="main">
+                <ul>
+                    <li class="search">
+                        <a class="fa-search" href="#search">Search</a>
+                        <form id="search" method="get" action="#">
+                            <input type="text" name="query" placeholder="Search" />
+                        </form>
+                    </li>
+                    <li class="menu">
+                        <a class="fa-bars" href="#menu">Menu</a>
+                    </li>
+                </ul>
+            </nav> -->
+		</header>
+
+		<!-- Menu -->
+		<section id="menu">
+
+			<!-- Search -->
+			<!-- <section>
+				<form class="search" method="get" action="#">
+					<input type="text" name="query" placeholder="Search" />
+				</form>
+			</section> -->
+
+			<!-- Links -->
+			<!-- <section>
+				<ul class="links">
+					<li>
+						<a href="#">
+							<h3>Lorem ipsum</h3>
+							<p>Feugiat tempus veroeros dolor</p>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<h3>Dolor sit amet</h3>
+							<p>Sed vitae justo condimentum</p>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<h3>Feugiat veroeros</h3>
+							<p>Phasellus sed ultricies mi congue</p>
+						</a>
+					</li>
+					<li>
+						<a href="#">
+							<h3>Etiam sed consequat</h3>
+							<p>Porta lectus amet ultricies</p>
+						</a>
+					</li>
+				</ul>
+			</section> -->
+
+			<!-- Actions -->
+			<!-- <section>
+				<ul class="actions stacked">
+					<li><a href="#" class="button large fit">Log In</a></li>
+				</ul>
+			</section> -->
+
+		</section>
+
+		<!-- Main -->
+		<div id="main">
+
+			<!-- Post -->
+			<article class="post">
+				<header>
+					<div class="title">
+						<h2><a href="#">Building A Real App #13</a></h2>
+						<p>Follow along with my journey to build a real app</p>
+					</div>
+					<div class="meta">
+						<time class="published" datetime="2025-10-01">Oct 1, 2025</time>
+						<!-- <a href="#" class="author"><span class="name">Jane Doe</span><img src="images/avatar.jpg"
+								alt="" /></a> -->
+					</div>
+				</header>
+				<span><img src="../images/BlogImages/Blog6/PhotoHeader.webp" alt="" /></span>
+				
+				<!-- Content -->
+				<h2>Designing Real-Time “Unread” Notifications</h2>
+				<p>
+					As I continue to build, I want to make sure I have key features that are needed, and the next one is 
+					having a visual notification system for users to know if there is an update in their assignments, 
+					especially since they can have hundreds and a user won't realistically look through all of them for an 
+					update. 
+
+					<br></br>
+
+					How it should work for my website:
+
+					<ol>
+						<li>
+							Consultants create or give feedback on an assignment
+						</li>
+						<li>
+							Students see the notification on their dashboard and submit their update
+						</li>
+						<li>
+							Consultants see their own notification it has been updated
+						</li>
+					</ol>
+				</p>
+
+				Like in most apps, the easiest way is for a small blue dot to appear that shows there is an update that 
+				hasn't been seen by the user. So I'll replicate that idea.
+				
+				<br></br>
+
+				I've started practicing a bit about how to design functions on paper first before implementing. Initially, 
+				I definitely got the system design aspect wrong, but it was a good learning experience.
+
+				<h2>My System Design</h2>
+				<p>
+					What I wanted:
+
+					<ul>
+						<li>
+							A small dot on assignments when something is new 
+						</li>
+						<li>
+							The dot disappears when the user views it 
+						</li>
+						<li>
+							Notifications should bubble up to folders 
+						</li>
+						<li>
+							Future Feature: emails / push notifications 
+						</li>
+					</ul>
+
+					Under the hood, this requires tracking:
+
+					<ul>
+						<li>
+							who updated something 
+						</li>
+						<li>
+							who has seen it 
+						</li>
+						<li>
+							when it happened 
+						</li>
+						<li>
+							how to scale this across users 
+						</li>
+					</ul>
+				</p>
+
+				<h2>My First Attempt</h2>
+				<p>
+					Initially, I thought I could just store something like in the assignment schema:
+
+					<pre><code class="language-tsx">
+						lastUpdatedBy: "consultant"
+						seenByOtherRole: false
+					</code></pre>
+				
+					<ul>
+						<li>
+							If consultant updates → student sees dot 
+						</li>
+						<li>
+							If student views → seenByOtherRole = true 
+						</li>
+					</ul>
+				</p>
+
+				<h2>Why this fails</h2>
+				<p>
+					After writing out my idea more, I asked AI to review it and give feedback. Turns out, it works for 
+					a basic system but breaks in real-world scenarios:
+
+					<br></br>
+
+					<h3>Problem 1: Not scalable to multiple users and no per-user tracking</h3>
+
+					What if:
+
+					<ul>
+						<li>
+							multiple consultants are assigned to a student? 
+						</li>
+						<li>
+							admins exist? 
+						</li>
+						<li>
+							Which consultant has seen this? 
+						</li>
+						<li>
+							Who hasn't? 
+						</li>
+					</ul>
+
+					This model assumes only two roles, and a future aspect I want to include in this website is to have 
+					this available to companies rather than freelancers. That means this needs to support various users 
+					looking at one item and having control of it. I want to build something that will be ready for that 
+					scaling.
+
+					<h3>Problem 2: No analytics</h3>
+
+					Having these records on the assignment stops us from easily computing:
+
+					<ul>
+						<li>
+							unread counts 
+						</li>
+						<li>
+							engagement 
+						</li>
+						<li>
+							activity timelines 
+						</li>
+					</ul>
+
+					There are some key stats that I need to keep available for people, and having to read through so many 
+					documents wouldn't be efficient. I should focus my data on users rather than have it focused on 
+					assignments.
+				</p>
+
+				<h2>The Better Approach: Timestamps + User IDs</h2>
+				<p>
+					After researching and sanity-checking with multiple AI tools, I switched to adding this assignment 
+					metadata onto the user schema instead. Now, we see this in the subcollection:
+
+					<pre><code class="language-tsx">
+						assignmentId:
+							{
+								lastActivityAt: Timestamp
+								lastActivityById: Timestamp
+								hasRead: boolean
+							}
+					</code></pre>
+
+					Since this subcollection is on for every user, it's easy to see how a user has interacted with an 
+					assignment.
+
+					<br></br>
+
+					However, a slightly complicated part comes up now. I need this hasRead value in the backend for the 
+					purposes of data analytics for users. However, in the frontend, this needs to still be attached to an 
+					assignment so that I can properly render the dot notification. So, in the frontend for my redux state, 
+					I add this hasRead field to my assignments. Remember, hasRead is connected to assignmentIds in the 
+					subcollection, so it's just a matter of connecting the hasRead to their respective assignments.
+					
+					<br></br>
+
+					Here is my thunk action that does this:
+
+					<pre><code class="language-tsx">
+						export const fetchAssignments = createAsyncThunk(
+						"currentStudentAssignments/fetchAssignments",
+						async (assignmentsDocIds: string[], {rejectWithValue, getState}) => {
+							try {
+							const state = getState() as RootState;
+							const assignmentsMetaData = state.user.assignmentsMetaData
+
+							// Fetch all assignments in parallel
+							const assignments = await Promise.all(
+								assignmentsDocIds.map(async (assignmentDocId) => {
+								// Get a reference to the assignment document and fetch its snapshot
+								const assignmentRef = doc(db, "assignments", assignmentDocId);
+								const assignmentSnapshot = await getDoc(assignmentRef);
+
+								if (!assignmentSnapshot.exists()) {
+									throw new Error(`Assignment with ID ${assignmentDocId} not found`);
+								}
+
+								// Extract data from the snapshot
+								const assignmentData = assignmentSnapshot.data();
+
+								// const assignmentMetaData = assignmentsMetaData.find((meta) => meta.id === assignmentDocId)
+									const assignmentMetaData = assignmentsMetaData[assignmentDocId]
+
+								// Ensure all required Assignment fields are present
+								return {
+									id: assignmentDocId,
+									...assignmentData,
+									hasRead: assignmentMetaData?.hasRead
+								} as Assignment;
+								})
+							);
+							return assignments;
+							} catch (error) {
+							return rejectWithValue((error as Error).message);
+							}
+						}
+						);
+					</code></pre>
+
+					Now, rendering on the frontend is simple. For assignmentRows, I simply have this line since this is 
+					data that is coming directly with the assignment:
+
+					<pre><code class="language-tsx">
+						{!assignment.hasRead && ...}
+					</code></pre>
+
+					For folderRows, since I already separate the assignments being passed into each folder, then each 
+					folder only has the assignments within it. So I just have this:
+
+					<pre><code class="language-tsx">
+						const hasUnread = assignments.some((assignment) => !assignment.hasRead)
+					</code></pre>
+
+				</p>
+				
+				<h2>Handling Updates For Assignments</h2>
+				<p>
+					I have to make sure updates to an assignment now also continue with the logic that we've implemented 
+					in the database and frontend.
+
+					<br></br>
+
+					I've had to adjust my uploadEntry a bit. I needed a way to make sure that I was always correctly 
+					updating with one user and then updating it the opposite way with the other user. I figured I could 
+					set isConsultant to check if the user is a consultant. This gives us both sides of what we need.	
+
+
+					<pre><code class="language-tsx">
+						await countOfAssignmentsNotFinished()
+						await nextAssignmentDue()
+					</code></pre>
+
+					I switched to:
+
+					<pre><code class="language-tsx">
+						export const uploadEntry = async (entryData: Entry, assignmentDocId: string, consultantId: string, studentId: string, userId: string) => {
+							try {
+								await updateDoc(doc(db, "assignments", assignmentDocId), {
+									timeline: arrayUnion(entryData)
+								})
+
+								const isConsultant = userId === consultantId
+
+								await updateDoc(doc(db, "consultantUsers", consultantId, "assignmentMeta", assignmentDocId), {
+									hasRead: isConsultant,
+									lastActivityAt: Timestamp.now(),
+									lastSeenAt: Timestamp.now()
+								})
+
+								await updateDoc(doc(db, "studentUsers", studentId, "assignmentMeta", assignmentDocId), {
+									hasRead: !isConsultant,
+									lastActivityAt: Timestamp.now(),
+									lastSeenAt: Timestamp.now()
+								})
+
+							} catch (error) {
+								console.log("Error updating assignment in uploadEntry", error)
+								throw error
+							}
+						}
+					</code></pre>
+
+					Of course, I had to check elsewhere in the app for any kind of functionality that would need to 
+					change along with implementing this, and I realized that the 'read' aspect from the frontend still 
+					needed to be implemented, where no changes are made to an assignment, just reading it. So I added 
+					some dispatches that would ensure that the assignment is marked as read in the frontend and backend.
+
+					<pre><code class="language-tsx">
+						const handleAssignmentClick = async (assignment) => {
+							setIsModalOpen(true)
+
+							dispatch(setCurrentAssignment(assignment))
+
+							await readAssignment(assignment.id, "consultantUsers", user.id)
+
+							dispatch(readAssignmentSlice(assignment.id))
+							dispatch(readAssignmentUserSlice(assignment.id))
+						}
+					</code></pre>
+				</p>
+
+				<h2>Lessons Learned</h2>
+				<p>
+					<ol>
+						<li>
+							Use timestamps to get more accurate data on when something is being updated. 
+						</li>
+						<li>
+							Simply using boolean flags for state like “read/unread” doesn't work, we need to at least 
+							connect it to a userId.
+						</li>
+						<li>
+							Think in terms of queries What kind of queries do we want to perform, design data that let's us 
+							easiest grab that data.
+						</li>
+						<li>
+							Design for future features early.
+						</li>
+					</ol>
+				</p>
+				<h2>What's Next</h2>
+				<p>
+					I've done a lot of stuff for the app, but I think it's time to step back and refactor things as a whole.
+					Can any files be sorted better, or cut down? I need to make sure I don't build too much and get lost.
+				</p>
+				<footer>
+					<!-- <ul class="stats">
+						<li><a href="#">General</a></li>
+						<li><a href="#" class="icon solid fa-heart">28</a></li>
+						<li><a href="#" class="icon solid fa-comment">128</a></li>
+					</ul> -->
+				</footer>
+			</article>
+
+		</div>
+
+		<!-- Footer -->
+		<section id="footer">
+			<ul class="icons">
+				<li><a href="https://www.linkedin.com/in/charles-cruse-2ba72ab6/"
+						class="icon brands fa-linkedin fa-lg"><span class="label">LinkedIn</span></a></li>
+				<li><a href="https://github.com/cruse-charles" class="icon brands fa-github fa-lg"><span
+							class="label">Github</span></a></li>
+				<li><a href="mailto:charlesncruse@gmail.com" class="icon solid fa-envelope fa-lg"><span
+							class="label">Email</span></a></li>
+			</ul>
+			<p class="copyright">&copy; Untitled. Design: <a href="http://html5up.net">HTML5 UP</a>.
+		</section>
+
+	</div>
+
+	<!-- Scripts -->
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/browser.min.js"></script>
+	<script src="assets/js/breakpoints.min.js"></script>
+	<script src="assets/js/util.js"></script>
+	<script src="assets/js/main.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/prismjs@1/components/prism-core.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/prismjs@1/plugins/autoloader/prism-autoloader.min.js"></script>
+
+</body>
+
+</html>
